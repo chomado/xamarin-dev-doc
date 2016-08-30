@@ -1,11 +1,11 @@
-# Xamrin Dev Days ハンズオン手順書
+# Xamarin Dev Days ハンズオン手順書
 
 これは、Xamarin.Forms と MSのクラウドサービス Microsoft Azure を使った簡単なアプリを作るハンズオンです。
 
 Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手順書『[Xamrin Dev Days Hands On Lab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)』の日本語訳版をここに載せます。
 
 
-## 今回何を作るの？
+## 今回 何を作るの？
 
 | 項目                       | 値                                                            |
 |----------------------------|---------------------------------------------------------------|---|
@@ -21,12 +21,15 @@ Windows でも Mac でも良いです。
 |Windows|Windows 10|Visual Studio 2015 Update 3|
 |Mac OS X|10.11 ("El Capitan") 以降 |Xamarin Studio, 最新の Xcode |
 
-ことわり：
+ことわり：    
 この手順書はスクリーンショット盛り盛りでお送りしますが、Visual Studio でのスクリーンショットのみとさせていただきます。 Xamarin Studio でもだいたい似た感じなので大丈夫です。
 
 # さぁ手を動かそう！
 
-## 手順１：ソリューションファイルを開く
+まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab) を開いておいてください。    
+[https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)
+
+## 手順 1 ：ソリューションファイルを開く
 
 [Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
 （Windows の場合は Visual Studio、Mac OS の場合は Xamarin Studio で開きます。）
@@ -41,3 +44,38 @@ Windows でも Mac でも良いです。
 |4 | `DevDaysSpeakers.UWP`|Windows 10 UWP アプリケーション|実行には Windows 10 & VS 2015 が必要|
 
 ![DevDaysSpeakers.sln](https://camo.githubusercontent.com/29d9c125b34e962b95034db26e7195a3f53d82b0/687474703a2f2f636f6e74656e742e73637265656e636173742e636f6d2f75736572732f4a616d65734d6f6e74656d61676e6f2f666f6c646572732f4a696e672f6d656469612f34346634636161392d656662392d343430352d393564342d3733343136303865316330612f506f727461626c652e706e67)
+
+共通部分である `DevDaysSpeakers (Portable)` プロジェクトの中に、空白の XAMLページ ([View/DetailsPage.xaml](https://github.com/xamarin/dev-days-labs/blob/master/HandsOnLab/Start/DevDaysSpeakers/DevDaysSpeakers/View/DetailsPage.xaml)など) がありますが、    
+これはこのハンズオンの中で使うことになるものです。
+
+## 手順 2 : NuGet Restore
+
+すべてのプロジェクトに於いて、必要な NuGet パッケージはすべてインストール済みとなっています。なので、このハンズオンでは、新たにパッケージを追加でインストールする必要はありません。    
+
+まず最初に我々がしなければならないことは、インターネットから、すべての NuGet パッケージをリストアすることです。
+
+どうやるかというと、ソリューションタブの中の『ソリューション』を
+右クリックして、『`Restore NuGet packages`』をクリックします。
+
+![Restore NuGet packages](https://camo.githubusercontent.com/45c5469cf5ce35c1bf6b7dc2d235351874359bcc/687474703a2f2f636f6e74656e742e73637265656e636173742e636f6d2f75736572732f4a616d65734d6f6e74656d61676e6f2f666f6c646572732f4a696e672f6d656469612f61333161366266662d623435642d346336302d613630322d3133353966393834653830622f323031362d30372d31315f313332382e706e67)
+
+
+## 手順 3 : Model を いじる
+
+スピーカーの情報を取ってこれるようにするため、 Speaker モデルを作りましょう。
+
+1. `DevDaysSpeakers (Portable)` プロジェクトの中の `DevDaysSpeakers/Model/Speaker.cs` ファイルを開きます。
+1. 【コピペ】 Speaker クラスの中に、以下のプロパティを追加してください。
+
+```csharp
+public string Id { get; set; }
+public string Name { get; set; }
+public string Description { get; set; }
+public string Website { get; set; }
+public string Title { get; set; }
+public string Avatar { get; set; }
+```
+
+## 手順 4 : View Model を いじる
+
+Xamarin.Forms の view で、どのようにデータを表示するかのすべての機能を、`SpeakersViewModel.cs` が提供します。
