@@ -78,4 +78,62 @@ public string Avatar { get; set; }
 
 ## 手順 4 : View Model を いじる
 
-Xamarin.Forms の view で、どのようにデータを表示するかのすべての機能を、`SpeakersViewModel.cs` が提供します。
+Xamarin.Forms の view で、どのようにデータを表示するかのすべての機能を、`SpeakersViewModel.cs` が提供します。    
+`SpeakersViewModel` は、 Speaker の List と、サーバからスピーカーのデータを取ってくるために呼ばれるメソッド、から構成されています。また、バックグラウンドタスクとしてデータを取って来ようとしていることを示す boolean フラグも持っています。   
+
+### INotifyPropertyChanged をインプリメントしよう
+
+`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェイス) は、 MVVM フレームワークに於いて、重要なデータバインディングです。 [TODO]  It is an interface that provides a contract that the user interface can subscribe to for notifications when the code in the code behind changes.
+
+今こうなっています：
+
+[Before]
+```csharp
+public class SpeakersViewModel
+{
+
+}
+```
+
+これを、こうしてください：
+
+[After]【コピペ】
+```csharp
+public class SpeakersViewModel : INotifyPropertyChanged
+{
+
+}
+```
+
+そして    
+右クリック → 『`Implement Interface`』をクリック    
+で、以下のコードが生えます。
+
+```csharp
+public event PropertyChangedEventHandler PropertyChanged;
+```
+
+これは、プロパティが変更された時いつでも呼ばれるメソッドです。ということで `OnPropertyChanged` というヘルパーメソッド(helper method)を作る必要が出てきます。
+
+【コピペ】 C# 6
+```csharp
+void OnPropertyChanged([CallerMemberName] string name = null) =>
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+```
+
+(ちなみに、C# 5 (バージョン古い)で書くとこうなります)
+```csharp
+void OnPropertyChanged([CallerMemberName] string name = null)
+{
+    var changed = PropertyChanged;
+
+            if (changed == null)
+                return;
+
+            changed.Invoke(this, new PropertyChangedEventArgs(name));
+}
+```
+
+というわけで、我々は、プロパティが更新され時はいつでも `OnPropertyChanged()` を呼ぶことができるようになりました。    
+さぁ、我々の最初の、バインディングできるプロパティ (our first bindable property) を作ってみましょう！
+
