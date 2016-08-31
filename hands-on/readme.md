@@ -83,7 +83,7 @@ Xamarin.Forms の view で、どのようにデータを表示するかのすべ
 
 ### INotifyPropertyChanged をインプリメントしよう
 
-`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェイス) は、 MVVM フレームワークに於いて、重要なデータバインディングです。 [TODO]  It is an interface that provides a contract that the user interface can subscribe to for notifications when the code in the code behind changes.
+`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェイス) は、 MVVM フレームワークに於いて、重要なデータバインディングです。 それ（INotifyPropertyChanged）は、オブジェクトの状態に変更があった場合に、ユーザーインターフェースが通知を受け取ることができる仕組みを提供します。
 
 今こうなっています：
 
@@ -127,13 +127,16 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 {
     var changed = PropertyChanged;
 
-            if (changed == null)
-                return;
+    if (changed == null)
+        return;
 
-            changed.Invoke(this, new PropertyChangedEventArgs(name));
+    changed.Invoke(this, new PropertyChangedEventArgs(name));
 }
 ```
 
 というわけで、我々は、プロパティが更新され時はいつでも `OnPropertyChanged()` を呼ぶことができるようになりました。    
 さぁ、我々の最初の、バインディングできるプロパティ (our first bindable property) を作ってみましょう！
 
+### IsBusy プロパティ
+
+この `SpeakersViewModel` クラスの中に、
