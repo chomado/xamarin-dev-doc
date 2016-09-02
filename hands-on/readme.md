@@ -9,7 +9,7 @@ Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手�
 
 | 項目                       | 値                                                            |
 |----------------------------|---------------------------------------------------------------|---|
-| どんなアプリ？             | Xamarin Dev Days のスピーカーと、その人の詳細を表示するアプリ |
+| どんなアプリ？             | Xamarin Dev Days の本社スピーカーと、その人の詳細を表示するアプリ |
 | どんなアプリ？(技術的視点) | Microsoft Azure に接続された Xamarin.Forms で作るアプリ       |
 
 ## 開発環境
@@ -186,3 +186,67 @@ public SpeakersViewModel()
     Speakers = new ObservableCollection<Speaker>();
 }
 ```
+
+
+### GetSpeakers メソッド
+
+我々は今から `GetSpeakers` という名前のメソッドを作ろうとしていますが、これは、インターネットから speaker のデータをすべて取ってくるときに呼ぶメソッドです。    
+まずは単純な HTTP リクエストから実装します。でもあとから Azure からデータを取ってきたりこちら(クライアント)から変更して sync できるようにアップデートします！
+
+まず、`GetSpeakers`という名前のメソッドを作ります。型は `async Task` です。
+
+```csharp
+async Task GetSpeakers()
+{
+
+}
+```
+
+これから、この `GetSpeakers` メソッドの中に色々とコードを書いていきます。
+
+まず、既にデータを取得済みかをチェックします。
+
+```csharp
+async Task GetSpeakers()
+{
+    if(IsBusy)
+        return;
+}
+```
+次に、 try/catch/finally ブロックのための土台をいくつか作ります。
+
+```csharp
+async Task GetSpeakers()
+{
+    if (IsBusy)
+        return;
+
+    Exception error = null;
+    try
+    {
+        IsBusy = true;
+
+    }
+    catch (Exception ex)
+    {
+        error = ex;
+    }
+    finally
+    {
+       IsBusy = false;
+    }
+}
+```
+
+`IsBusy` は最初は true にセットしておき、そしてサーバーに接続しようとした時と、終わった時は false にセットします。
+
+そして、`try`ブロックの中で、サーバから json データを取ってくるために `HttpClient` を使います。
+
+```csharp
+using(var client = new HttpClient())
+{
+    // サーバから json データを取ってくる
+    var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
+} 
+```
+
