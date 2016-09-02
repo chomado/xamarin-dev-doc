@@ -163,7 +163,7 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
-## Speaker の ObservableCollection 
+### Speaker の ObservableCollection 
 
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
