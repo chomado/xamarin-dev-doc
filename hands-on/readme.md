@@ -139,4 +139,50 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 
 ### IsBusy プロパティ
 
-この `SpeakersViewModel` クラスの中に、
+この `SpeakersViewModel` クラスの中に、bool値を get/set するための、バッキングフィールド(backing field)と 自動プロパティ(自動実装プロパティ/auto-properties)を作りましょう。
+
+まず、バッキングフィールドを作ります。
+
+```csharp
+bool busy;
+```
+
+そして、自動プロパティを作ります。
+
+```csharp
+public bool IsBusy
+{
+    get { return busy; }
+    set
+    {
+        busy = value;
+        OnPropertyChanged();
+    }
+}
+```
+
+`OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
+
+## Speaker の ObservableCollection 
+
+[メモ]    
+`ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
+
+[TODO] We will use an ObservableCollection that will be cleared and then loaded with speakers.
+なぜ `ObservableCollection` を使うかというと、これは要素(コレクションの中身)を追加とか削除とかすると発火する `CollectionChanged` というイベントを最初から持っているからです。
+
+[TODO] In the class above the constructor simply create an autoproperty:
+
+```csharp
+public ObservableCollection<Speaker> Speakers { get; set; }
+```
+
+コンストラクタの中で、`ObservableCollection` の新しいインスタンスを作ります。
+なので、SpeakersViewModelクラスのコンストラクタはこのようになります：
+
+```csharp
+public SpeakersViewModel()
+{
+    Speakers = new ObservableCollection<Speaker>();
+}
+```
