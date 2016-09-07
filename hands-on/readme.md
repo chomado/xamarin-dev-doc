@@ -432,16 +432,15 @@ Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **
 ## Details
 それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
 
-### ItemSelected event
-コードビハインドである **SpeakersPage.xaml.cs** 内で SpeakersViewModelのセットアップをしていることが見つかると思います．
-それではスピーカーのアイテムが選択された時に，選択されたという通知を受け取るためイベントを追加してみましょう．
-コード内の **BindingContext = vm;** の下に以下のように **ListViewSpeakers** にイベントを追加していきます．
+### ItemSelected Event
+
+In the code behind you will find the setup for the SpeakersViewModel. Under **BindingContext = vm;**, let's add an event to the **ListViewSpeakers** to get notified when an item is selected
 
 ```csharp
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
-また選択されたアイテムの詳細ページのであるDetailsPageに遷移するために，以下のようなメソッドを実装します．
+Let's create and fill in this method and navigate to the DetailsPage.
 
 ```csharp
 private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -456,9 +455,7 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 }
 ```
 
-上記のコードでは，選択されたアイテムがnullでないことを確認し，
-そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし，
-その後にListViewで選択されたアイテムの選択状態を解除しています．
+In the above code we check to see if the selected item is not null and then use the built in **Navigation** API to push a new page and then deselect the item.
 
 ### DetailsPage.xaml
 
