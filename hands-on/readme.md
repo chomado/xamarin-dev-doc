@@ -281,14 +281,70 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし，
 その後にListViewで選択されたアイテムの選択状態を解除しています．
 
-### DetailsPage.xml
+### DetailsPage.xaml
+では、Details pageに記入してみましょう。SpeakersPageと同様です。私たちはStackLayoutを使用しますが、でも私たちはScrollViewでそれをラップします。私たちが長いテキストを持っている場合、
 
+```xml
+  <ScrollView Padding="10">
+    <StackLayout Spacing="10">
+     <!-- Detail controls here -->
+    </StackLayout>    
+  </ScrollView>
+```
+
+では、Speaker objectのプロパティのためのコントロールとバインディングを追加してみましょう。
+
+```xml
+<Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
+      
+<Label Text="{Binding Name}" FontSize="24"/>
+<Label Text="{Binding Title}" TextColor="Purple"/>
+<Label Text="{Binding Description}"/>
+```
+
+今、楽しみのため、 let's add two buttons that we will add click events to in the code behind:
+
+```xml
+<Button Text="Speak" x:Name="ButtonSpeak"/>
+<Button Text="Go to Website" x:Name="ButtonWebsite"/>
+```
 
 ### Text to Speech
+もし、私たちが **DetailsPage.xaml.cs** をオープンアップする場合、私たちはハンドラを多少クリックするだけで、すぐに追加できます。ButtonSpeakで始めましょう。その場所で、私たちは[Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin)を使ってスピーカーの説明を読み戻すことになるでしょう。
 
+コンストラクタでは、 BindingContext以下にクリックハンドラを追加します。 
+
+```csharp
+ButtonSpeak.Clicked += ButtonSpeak_Clicked;
+```
+
+それから私たちはクリックハンドラを追加できて、また、クロスプラットフォームAPIをコールでき、テキストをスピーチします。
+
+```csharp
+private void ButtonSpeak_Clicked(object sender, EventArgs e)
+{
+    CrossTextToSpeech.Current.Speak(this.speaker.Description);
+}
+```
 
 ### Open Website
+Xamarin.Forms それ自身が持っているものとしては、クロスプラットフォーム目的で書かれてビルトされたナイスなAPIsを持っています。どのような物かというと、デフォルトのブラウザでURLを開くようなものです。
 
+その他のクリックハンドラを追加しましょう。 でも今回はButtonWebsiteのためです。
+
+```csharp
+ButtonWebsite.Clicked += ButtonWebsite_Clicked;
+```
+
+それから私たちは、デバイスキーワード (Device keyword) を使用できます。OpenUri method をコールします。
+
+```csharp
+private void ButtonWebsite_Clicked(object sender, EventArgs e)
+{
+    if (speaker.Website.StartsWith("http"))
+        Device.OpenUri(new Uri(speaker.Website));
+}
+```
 
 ### Compile & Run
-
+いま私たちがすべきは、コンパイルのためのセットをすべて行う必要があり、そして、まさに前のようにrunする必要があります。
