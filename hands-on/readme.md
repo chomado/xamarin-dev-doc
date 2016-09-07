@@ -430,7 +430,8 @@ Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **
 
 
 ## Details
-それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
+
+Now, let's do some navigation and display some Details. Let's upen up the code behind for **SpeakersPage.xaml** called **SpeakersPage.xaml.cs**.
 
 ### ItemSelected Event
 
