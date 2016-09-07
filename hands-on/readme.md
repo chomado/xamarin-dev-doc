@@ -163,7 +163,7 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
-### Speaker の ObservableCollection 
+### Speaker の ObservableCollection
 
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
@@ -247,6 +247,172 @@ using(var client = new HttpClient())
 {
     // サーバから json データを取ってくる
     var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
-} 
+}
 ```
 
+## 宿題
+
+二つの宿題でDev Daysをさらに進めましょう。
+
+### 宿題1: Cognitive Services
+
+[Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)を使い、詳細ページに話し手の表情から幸福度を解析するボタンを追加しましょう。
+
+http://microsoft.com/cognitiveからアカウントとAPIキーを取得し、以下の手順を踏んでください。
+
+1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加する
+
+2.) `EmotionService`クラスを追加する
+
+```csharp
+public class EmotionService
+{
+    private static async Task<Emotion[]> GetHappinessAsync(string url)
+    {
+        var client = new HttpClient();
+        var stream = await client.GetStreamAsync(url);
+        var emotionClient = new EmotionServiceClient(CognitiveServicesKeys.Emotion);
+
+        var emotionResults = await emotionClient.RecognizeAsync(stream);
+
+        if (emotionResults == null || emotionResults.Count() == 0)
+        {
+            throw new Exception("Can't detect face");
+        }
+
+        return emotionResults;
+    }
+
+    //複数の被検対象が存在する場合の平均幸福度算出
+    public static async Task<float> GetAverageHappinessScoreAsync(string url)
+    {
+        Emotion[] emotionResults = await GetHappinessAsync(url);
+
+        float score = 0;
+        foreach (var emotionResult in emotionResults)
+        {
+            score = score + emotionResult.Scores.Happiness;
+        }
+
+        return score / emotionResults.Count();
+    }
+
+    public static string GetHappinessMessage(float score)
+    {
+        score = score * 100;
+        double result = Math.Round(score, 2);
+
+        if (score >= 50)
+            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノ";
+        else
+            return result + "% （；＿；）";
+    }
+}
+```
+
+3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze** と指定する
+
+4.) クリックのハンドラを追加し、`async`キーワードを指定する
+
+5.) 以下のコードを実行する
+
+```csharp
+var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avatar);
+```
+
+6.) ポップアップアラートを表示する
+```csharp
+await DisplayAlert("Happiness Level", level, "OK");
+```
+
+### 宿題2: 話し手の詳細を編集する
+
+ここでは話し手の肩書きを編集可能にします。
+
+`DetailsPage.xaml`を開き、肩書きを表示している`Labal`
+
+```xml
+<Label Text="{Binding Title}" TextColor="Purple"/>
+```
+
+を以下のような`OneWay`データバインディングを持つ`Entry`に変更し、`Name`を指定してください。
+
+`OneWay`にすると、テキストを入力しても実際のデータは変更されません。
+
+```xml
+<Entry Text="{Binding Title, Mode=OneWay}"
+             TextColor="Purple"
+             x:Name="EntryTitle"/>
+```
+
+保存ボタンを「ウェブサイトに行く」ボタンの下に追加しましょう。
+
+```xml
+<Button Text="Save" x:Name="ButtonSave"/>
+```
+
+#### SpeakersViewModelを更新する
+
+`SpeakersViewModel`を開き、話し手を同期し、リストを更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
+
+```csharp
+ public async Task UpdateSpeaker(Speaker speaker)
+{
+    await table.UpdateAsync(speaker);
+    await table.Sync();
+    await GetSpeakers();
+}
+```
+
+#### DetailsPage.xaml.csを更新する
+
+SpeakersViewModelを受け取るようにDetailsPageのコンストラクタを変更しましょう。
+
+変更前:
+```csharp
+Speaker speaker;
+public DetailsPage(Speaker item)
+{
+    InitializeComponent();
+    this.speaker = item;
+    ...
+}
+```
+変更後:
+```csharp
+Speaker speaker;
+SpeakersViewModel vm;
+public DetailsPage(Speaker item, SpeakersViewModel viewModel)
+{
+    InitializeComponent();
+    this.speaker = item;
+    this.vm = viewModel;
+    ...
+}
+```
+
+`ButtonSave`のためのハンドラを追加します。
+
+```csharp
+ButtonSave.Clicked += ButtonSave_Clicked;
+```
+
+ボタンがクリックされたとき、話し手を更新・保存し前のページに戻ります。
+
+```csharp
+private async void ButtonSave_Clicked(object sender, EventArgs e)
+{
+    speaker.Title = EntryTitle.Text;
+    await vm.UpdateSpeaker(speaker);
+    await Navigation.PopAsync();
+}
+```
+
+最後に、`ListViewSpeakers_ItemSelected`で`SpeakersPage.xaml.cs`へ飛ぶときにViewModelを渡すようにする必要があります。
+
+```csharp
+//ビューモデルを渡す。
+await Navigation.PushAsync(new DetailsPage(speaker, vm));
+```
+
+できあがり！
