@@ -250,6 +250,185 @@ using(var client = new HttpClient())
 } 
 ```
 
+Still inside of the **using**, we will Deserialize the json and turn it into a list of Speakers with Json.NET:
+
+```csharp
+var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
+```
+
+Still inside of the **using**, we can will clear the speakers and then load them into the ObservableCollection:
+
+```csharp
+Speakers.Clear();
+foreach (var item in items)
+    Speakers.Add(item);
+```
+If anything goes wrong the **catch** will save out the exception and AFTER the finally block we can pop up an alert:
+
+```csharp
+if (error != null)
+    await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+```
+
+The completed code should look like:
+
+```csharp
+async Task GetSpeakers()
+{
+    if (IsBusy)
+        return;
+
+    Exception error = null;
+    try
+    {
+        IsBusy = true;
+        
+        using(var client = new HttpClient())
+        {
+            //grab json from server
+            var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
+            
+            //Deserialize json
+            var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
+            
+            //Load speakers into list
+            Speakers.Clear();
+            foreach (var item in items)
+                Speakers.Add(item);
+        } 
+    }
+    catch (Exception ex)
+    {
+        Debug.WriteLine("Error: " + ex);
+        error = ex;
+    }
+    finally
+    {
+        IsBusy = false;
+    }
+
+    if (error != null)
+        await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+}
+```
+
+Our main method for gettering data is now complete!
+
+#### GetSpeakers Command
+
+Intead of invoking this method directly, we will expose it with a **Command**. A Command has an interface that knows what method to invoke and has an optional way of describing if the Command is enabled.
+
+Where we created our ObservableCollection<Speaker> Speakers {get;set;} create a new Command called **GetSpeakersCommand**:
+
+```csharp
+public Command GetSpeakersCommand { get; set; }
+```
+
+Inside of the **SpeakersViewModel()** constructor we can create the GetSpeakersCommand and assign it a method to use. We can also pass in an enabled flag leveraging our IsBusy:
+
+```csharp
+GetSpeakersCommand = new Command(
+                async () => await GetSpeakers(),
+                () => !IsBusy);
+```
+
+The only modification that we will have to make is when we set the IsBusy property, as we will want to re-evaluate the enabled function that we created. In the **set** of **IsBusy** simply invoke the **ChangeCanExecute** method on the **GetSpeakersCommand** such as:
+
+```csharp
+set
+{
+    busy = value;
+    OnPropertyChanged();
+    //Update the can execute
+    GetSpeakersCommand.ChangeCanExecute();
+}
+```
+
+## The User Interface!!!
+It is now finally time to build out our first Xamarin.Forms user interface in the *View/SpeakersPage.xaml**
+
+### SpeakersPage.xaml
+
+For the first page of the app we will add a few controls onto the page that are stacked vertically. We can use a StackLayout to do this. Inbetween the ContentPage add the following:
+
+```xml
+ <StackLayout Spacing="0">
+
+  </StackLayout>
+```
+
+This will be the base where all of the child controls will go and will have no space inbetween them.
+
+Next, let's add a Button that has a binding to the **GetSpeakersCommand** that we created:
+
+```xml
+<Button Text="Sync Speakers" Command="{Binding GetSpeakersCommand}"/>
+```
+
+Under the button we can display a loading bar when we are gathering data form the server. We can use an ActivityIndicator to do this and bind to the IsBusy property we created:
+
+```xml
+<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+```
+
+We will use a ListView that binds to the Speakers collection to display all of the items. We can use a special property called *x:Name=""* to name any control:
+
+```xml
+<ListView x:Name="ListViewSpeakers"
+              ItemsSource="{Binding Speakers}">
+        <!--Add ItemTemplate Here-->
+</ListView>
+```
+
+We still need to describe what each item looks like, and to do so, we can use an ItemTemplate that has a DataTemplate with a specific View inside of it. Xamarin.Forms contains a few default Cells that we can use, and we will use the **ImageCell** that has an image and two rows of text
+
+Replace <!--Add ItemTemplate Here--> with: 
+
+```xml
+<ListView.ItemTemplate>
+    <DataTemplate>
+        <ImageCell Text="{Binding Name}"
+                    Detail="{Binding Title}"
+                    ImageSource="{Binding Avatar}"/>
+    </DataTemplate>
+</ListView.ItemTemplate>
+```
+Xamarin.Forms will automatically download, cache, and display the image from the server.
+
+### Validate App.cs
+
+Open the App.cs file and you will see the entry point for the application, which is the constructor for App(). It simply creates the new SpeakersPage, and then wraps it in a navigation page to get a nice title bar.
+
+### Run the App!
+
+Now, you can set the iOS, Android, or UWP (Windows/VS2015 only) as the start project and start debugging.
+
+![Startup project](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/020972ff-2a81-48f1-bbc7-1e4b89794369/2016-07-11_1442.png)
+
+#### iOS
+If you are on a PC then you will need to be connected to a macOS device with Xamarin installed to run and debug the app.
+
+If connected, you will see a Green connection status. Select **iPhoneSimulator as your target, and then select the Simulator to debug on.
+
+![iOS Setup](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/a6b32d62-cd3d-41ea-bd16-1bcc1fbe1f9d/2016-07-11_1445.png)
+
+#### Android
+
+Simply set the DevDaysSpeakers.Droid as the startup project and select a simulator to run on.
+
+#### Windows 10
+
+Ensure that you have the SQLite extension installed for UWP apps:
+
+Go to **Tools->Extensions & Updates**
+
+Under Online search for *SQLite* and ensure that you have SQlite for Univeral Windows Platform installed (current version 3.13.0)
+
+![Sqlite](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/ace42b1e-edd8-4e65-92e7-f638b83ad533/2016-07-11_1605.png)
+
+Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **Local Machine**.
+
+
 ## Details
 それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
 
