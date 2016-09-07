@@ -415,4 +415,49 @@ private async void ButtonSave_Clicked(object sender, EventArgs e)
 await Navigation.PushAsync(new DetailsPage(speaker, vm));
 ```
 
+<<<<<<< HEAD
 できあがり！
+=======
+## Details
+それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
+
+### ItemSelected event
+コードビハインドである **SpeakersPage.xaml.cs** 内で SpeakersViewModelのセットアップをしていることが見つかると思います．
+それではスピーカーのアイテムが選択された時に，選択されたという通知を受け取るためイベントを追加してみましょう．
+コード内の **BindingContext = vm;** の下に以下のように **ListViewSpeakers** にイベントを追加していきます．
+
+```csharp
+ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
+```
+
+また選択されたアイテムの詳細ページのであるDetailsPageに遷移するために，以下のようなメソッドを実装します．
+
+```csharp
+private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+{
+    var speaker = e.SelectedItem as Speaker;
+    if (speaker == null)
+        return;
+
+    await Navigation.PushAsync(new DetailsPage(speaker));
+
+    ListViewSpeakers.SelectedItem = null;
+}
+```
+
+上記のコードでは，選択されたアイテムがnullでないことを確認し，
+そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし，
+その後にListViewで選択されたアイテムの選択状態を解除しています．
+
+### DetailsPage.xml
+
+
+### Text to Speech
+
+
+### Open Website
+
+
+### Compile & Run
+
+>>>>>>> master
