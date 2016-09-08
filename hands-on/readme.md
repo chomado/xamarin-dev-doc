@@ -163,7 +163,7 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
-### Speaker の ObservableCollection 
+### Speaker の ObservableCollection
 
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
@@ -247,7 +247,7 @@ using(var client = new HttpClient())
 {
     // サーバから json データを取ってくる
     var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
-} 
+}
 ```
 
 ## Details
@@ -292,3 +292,85 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 
 ### Compile & Run
 
+
+
+
+
+
+## Connect to Azure Mobile Apps
+
+## Azure Mobile Apps に接続します
+
+Of course being able grab data from a RESTful end point is great, but what about a full back end? This is where Azure Mobile Apps comes in. Let's upgrade our application to use an Azure Mobile Apps back end.
+
+もちろん RESTful なエンドポイントからデータを取得できることは大事ですがフルバックエンドについてはどうでしょうか？そこで Azure Mobile Apps です。それでは私たちのアプリケーションを Azure Mobile Apps バックエンドを使うようにアップグレードしていきましょう。
+
+Head to [http://portal.azure.com](http://portal.azure.com) and register for an account.
+
+[http://portal.azure.com](http://portal.azure.com) にアクセスし、アカウントを取得します。
+
+Once you are in the portal select the **+ New** button and search for **mobile apps** and you will see the results as shown below. Select **Mobile Apps Quickstart**
+
+ポータルにアクセスしたら、**+ 新規** ボタンを選択し、**mobile apps** を検索します。下の図のように検索結果が表示されますので、**Mobile Apps Quickstart** を選択します。
+
+![Quickstart](ConnectAzure_Quickstart.png)
+
+The Quickstart blade will open, select **Create**
+
+Quickstart のブレードが開くので、**作成** をクリックします。
+
+![Create quickstart](ConnectAzure_CreateQuickstart.png)
+
+This will open a settings blade with 4 settings:
+
+4つの設定項目がある設定ブレードが開きます:
+
+**App name**
+
+**アプリ名**
+
+This is a unique name for the app that you will need when you configure the back end in your app. You will need to choose a globally-unique name; for example, you could try something like *yourlastnamespeakers*.
+
+これはアプリのバックエンドを設定するのに必要な一意のアプリ名です。グローバルで一意の名前が必要です。例えば *yourlastnamespeakers* などを試してみてください。
+
+**Subscription**
+
+**サブスクリプション**
+
+Select a subscription or create a pay-as-you-go account (this service will not cost you anything)
+
+サブスクリプションを選択するか、従量課金のアカウントを作成します。(このサービスでは課金は発生しません)
+
+**Resource Group**
+
+**リソースグループ**
+
+Select *Create new* and call it **DevDaysSpeakers**
+
+*新規作成* を選択し、**DevDaysSpeakers** と入力します。
+
+A resource group is a group of related services that can be easily deleted later.
+
+リソースグループは後で関連のあるサービスを一度に簡単に削除するためのグループです。
+
+**App Service plan/Location**
+
+**App Service プラン/場所**
+
+Click this field and select **Create New**, give it a unique name, select a location (typically you would choose a location close to your customers), and then select the F1 Free tier:
+
+このフィールドをクリックして **新規作成** を選択し、一意の名前を付けます。場所 (通常は近い場所を選択します) を選択し、F1 Free の価格レベルを選択します:
+
+注: **価格レベルを選択** ブレードの右上にある **すべて表示** をクリックすると F1 Free の価格レベルが表示され選択できるようになります。
+
+![service plan](ConnectAzure_ServicePlan.png)
+
+Finally check **Pin to dashboard** and click create:
+
+最後に **ダッシュボードにピン留めする** をチェックし、［作成］をクリックします:
+
+![Create](ConnectAzure_Create.png)
+
+This will take about 3-5 minutes to setup, so let's head back to the code!
+
+Mobile Apps のセットアップが完了するまでに 3～5 分ほど掛かります。コードに戻りましょう！
