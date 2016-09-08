@@ -431,19 +431,19 @@ Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **
 
 ## Details
 
-それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
+それでは詳細画面とその画面遷移を行なっていきましょう。 **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください。
 
 ### ItemSelected Event
 
-コードビハインドである **SpeakersPage.xaml.cs** 内で SpeakersViewModelのセットアップをしていることが見つかると思います．
-それではスピーカーのアイテムが選択された時に，選択されたという通知を受け取るためイベントを追加してみましょう．
-コード内の **BindingContext = vm;** の下に以下のように **ListViewSpeakers** にイベントを追加していきます．
+コードビハインドである **SpeakersPage.xaml.cs** 内で SpeakersViewModelのセットアップをしていることが見つかると思います。
+それではスピーカーのアイテムが選択された時に、選択されたという通知を受け取るためイベントを追加してみましょう。
+コード内の **BindingContext = vm;** の下に以下のように **ListViewSpeakers** にイベントを追加していきます。
 
 ```csharp
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
-また選択されたアイテムの詳細ページのであるDetailsPageに遷移するために，以下のようなメソッドを実装します．
+また選択されたアイテムの詳細ページのであるDetailsPageに遷移するために、以下のようなメソッドを実装します。
 
 ```csharp
 private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -458,14 +458,14 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 }
 ```
 
-上記のコードでは，選択されたアイテムがnullでないことを確認し，
-そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし，
-その後にListViewで選択されたアイテムの選択状態を解除しています．
+上記のコードでは、選択されたアイテムがnullでないことを確認し、
+そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし、
+その後にListViewで選択されたアイテムの選択状態を解除しています。
 
 ### DetailsPage.xaml
 
-それではDetailsPage埋めていきましょう．SpeakersPageと同様にStackLayoutを使っていきますが，
-長いテキストがある場合ScrollViewで囲みます．
+それではDetailsPage埋めていきましょう。SpeakersPageと同様にStackLayoutを使っていきますが、
+長いテキストがある場合ScrollViewで囲みます。
 
 ```xml
   <ScrollView Padding="10">
@@ -475,7 +475,7 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
   </ScrollView>
 ```
 
-それではSpeakerオブジェクトのプロパティに対するコントロールとバインディングを追加していきます．
+それではSpeakerオブジェクトのプロパティに対するコントロールとバインディングを追加していきます。
 
 ```xml
 <Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
@@ -485,7 +485,7 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 <Label Text="{Binding Description}"/>
 ```
 
-２つのボタンを追加します．コードビハインドでこれらのボタンのクリックハンドラを追加するためにボタンに名前をつけます．
+２つのボタンを追加します。コードビハインドでこれらのボタンのクリックハンドラを追加するためにボタンに名前をつけます。
 
 ```xml
 <Button Text="Speak" x:Name="ButtonSpeak"/>
@@ -494,16 +494,16 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 
 ### Text to Speech
 
-**DetailsPage.xaml.cs** を開くといくつかクリックハンドラを追加することができます．
-それではスピーカーの詳細を読み返すために使用する[Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin)を使用するButtonSpeakから始めてみましょう．
+**DetailsPage.xaml.cs** を開くといくつかクリックハンドラを追加することができます。
+それではスピーカーの詳細を読み返すために使用する[Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin)を使用するButtonSpeakから始めてみましょう。
 
-コンストラク内のBindingContextの下にクリックハンドラを以下のように追加します．
+コンストラク内のBindingContextの下にクリックハンドラを以下のように追加します。
 
 ```csharp
 ButtonSpeak.Clicked += ButtonSpeak_Clicked;
 ```
 
-そうするとクリックハンドラを追加することができて，また text to speechに対するクロスプラットフォームのAPIを呼び出すことができます．
+そうするとクリックハンドラを追加することができて、また text to speechに対するクロスプラットフォームのAPIを呼び出すことができます。
 
 ```csharp
 private void ButtonSpeak_Clicked(object sender, EventArgs e)
@@ -513,15 +513,15 @@ private void ButtonSpeak_Clicked(object sender, EventArgs e)
 ```
 
 ### Open Website
-Xamarin.Forms自体がURLを標準のブラウザで開くようなクロスプラットフォームとしての機能に対するAPIを備えています．
+Xamarin.Forms自体がURLを標準のブラウザで開くようなクロスプラットフォームとしての機能に対するAPIを備えています。
 
-それでは `ButtonWebsite` のクリックハンドラを加えてみましょう．
+それでは `ButtonWebsite` のクリックハンドラを加えてみましょう。
 
 ```csharp
 ButtonWebsite.Clicked += ButtonWebsite_Clicked;
 ```
 
-ここでDeviceクラスを使うことで OpenUriメソッドを呼ぶことができます．
+ここでDeviceクラスを使うことで OpenUriメソッドを呼ぶことができます。
 
 ```csharp
 private void ButtonWebsite_Clicked(object sender, EventArgs e)
@@ -532,7 +532,7 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 ```
 
 ### Compile & Run
-コンパイルし実行するために，今までに行ってきた工程のように設定する必要があります．
+コンパイルし実行するために、今までに行ってきた工程のように設定する必要があります。
 
 ## Connect to Azure Mobile Apps
 
