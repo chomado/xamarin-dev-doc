@@ -431,17 +431,19 @@ Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **
 
 ## Details
 
-Now, let's do some navigation and display some Details. Let's upen up the code behind for **SpeakersPage.xaml** called **SpeakersPage.xaml.cs**.
+それでは詳細画面とその画面遷移を行なっていきましょう． **SpeakersPage.xaml** のコードビハインドである **SpeakersPage.xaml.cs** を開いてください．
 
 ### ItemSelected Event
 
-In the code behind you will find the setup for the SpeakersViewModel. Under **BindingContext = vm;**, let's add an event to the **ListViewSpeakers** to get notified when an item is selected
+コードビハインドである **SpeakersPage.xaml.cs** 内で SpeakersViewModelのセットアップをしていることが見つかると思います．
+それではスピーカーのアイテムが選択された時に，選択されたという通知を受け取るためイベントを追加してみましょう．
+コード内の **BindingContext = vm;** の下に以下のように **ListViewSpeakers** にイベントを追加していきます．
 
 ```csharp
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
-Let's create and fill in this method and navigate to the DetailsPage.
+また選択されたアイテムの詳細ページのであるDetailsPageに遷移するために，以下のようなメソッドを実装します．
 
 ```csharp
 private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -456,11 +458,14 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 }
 ```
 
-In the above code we check to see if the selected item is not null and then use the built in **Navigation** API to push a new page and then deselect the item.
+上記のコードでは，選択されたアイテムがnullでないことを確認し，
+そのアイテムのDetailsPageをもともと組み込まれている **Navigation** APIを使用し新しいページとしてプッシュし，
+その後にListViewで選択されたアイテムの選択状態を解除しています．
 
 ### DetailsPage.xaml
 
-Let's now fill in the Details page. Similar to the SpeakersPage, we will use a StackLayout, but we will wrap it in a ScrollView, incase we have long text.
+それではDetailsPage埋めていきましょう．SpeakersPageと同様にStackLayoutを使っていきますが，
+長いテキストがある場合ScrollViewで囲みます．
 
 ```xml
   <ScrollView Padding="10">
@@ -470,7 +475,7 @@ Let's now fill in the Details page. Similar to the SpeakersPage, we will use a S
   </ScrollView>
 ```
 
-Now, let's add controls and bindings for the properties in the Speaker object:
+それではSpeakerオブジェクトのプロパティに対するコントロールとバインディングを追加していきます．
 
 ```xml
 <Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
@@ -480,7 +485,7 @@ Now, let's add controls and bindings for the properties in the Speaker object:
 <Label Text="{Binding Description}"/>
 ```
 
-Now, for fun, let's add two buttons that we will add click events to in the code behind:
+２つのボタンを追加します．コードビハインドでこれらのボタンのクリックハンドラを追加するためにボタンに名前をつけます．
 
 ```xml
 <Button Text="Speak" x:Name="ButtonSpeak"/>
@@ -489,15 +494,16 @@ Now, for fun, let's add two buttons that we will add click events to in the code
 
 ### Text to Speech
 
-If we open up **DetailsPage.xaml.cs** we can now add a few more click handlers. Let's start with ButtonSpeak, where we will use the [Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin) to read back the speaker's description.
+**DetailsPage.xaml.cs** を開くといくつかクリックハンドラを追加することができます．
+それではスピーカーの詳細を読み返すために使用する[Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin)を使用するButtonSpeakから始めてみましょう．
 
-In the constructor, add a click handler below the BindingContext:
+コンストラク内のBindingContextの下にクリックハンドラを以下のように追加します．
 
 ```csharp
 ButtonSpeak.Clicked += ButtonSpeak_Clicked;
 ```
 
-Then we can add the click handler and call the cross platform API for text to speech:
+そうするとクリックハンドラを追加することができて，また text to speechに対するクロスプラットフォームのAPIを呼び出すことができます．
 
 ```csharp
 private void ButtonSpeak_Clicked(object sender, EventArgs e)
@@ -507,15 +513,15 @@ private void ButtonSpeak_Clicked(object sender, EventArgs e)
 ```
 
 ### Open Website
-Xamarin.Forms itself has some nice APIs built write in for cross platform functionality, such as opening a URL in the default browser.
+Xamarin.Forms自体がURLを標準のブラウザで開くようなクロスプラットフォームとしての機能に対するAPIを備えています．
 
-Let's add another click handler, but this time for ButtonWebsite:
+それでは `ButtonWebsite` のクリックハンドラを加えてみましょう．
 
 ```csharp
 ButtonWebsite.Clicked += ButtonWebsite_Clicked;
 ```
 
-Then, we can use the Device keyword to call the OpenUri method:
+ここでDeviceクラスを使うことで OpenUriメソッドを呼ぶことができます．
 
 ```csharp
 private void ButtonWebsite_Clicked(object sender, EventArgs e)
@@ -526,7 +532,7 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 ```
 
 ### Compile & Run
-Now, we should be all set to compile, and run just like before!
+コンパイルし実行するために，今までに行ってきた工程のように設定する必要があります．
 
 ## Connect to Azure Mobile Apps
 
