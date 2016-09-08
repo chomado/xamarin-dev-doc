@@ -349,7 +349,7 @@ set
 
 ### SpeakersPage.xaml
 
-アプリの最初のページとして、縦にスタックされる(縦に連なって表示される)コントロール群を追加します。初めに、ContentPage の中に、次のように StackLayout を追加してください：
+アプリの最初のページとして、縦にスタックされる(縦に連なって表示される)コントロール群を追加します。初めに、ContentPage の中に、次のように StackLayout を追加します：
 
 ```xml
  <StackLayout Spacing="0">
@@ -359,7 +359,7 @@ set
 
 今後、この StackLayout に対して、他のコントロールを追加していきます。
 
-次に、既に作成した **GetSpeakersCommand** にバインディングされるボタンを追加しましょう：
+次に、既に作成した **GetSpeakersCommand** にバインディングされるボタンを追加します：
 
 ```xml
 <Button Text="Sync Speakers" Command="{Binding GetSpeakersCommand}"/>
@@ -514,7 +514,7 @@ private void ButtonSpeak_Clicked(object sender, EventArgs e)
 ### ウェブサイトに移動
 Xamarin.Forms には、URL を既定のブラウザで開くためのクロス プラットフォームな機能が搭載されています。
 
-今度は、ButtonWebsite のクリック ハンドラを追加しましょう：
+今度は、ButtonWebsite のクリック ハンドラを追加します：
 
 ```csharp
 ButtonWebsite.Clicked += ButtonWebsite_Clicked;
