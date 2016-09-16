@@ -344,12 +344,12 @@ set
 }
 ```
 
-## The User Interface!!!
-It is now finally time to build out our first Xamarin.Forms user interface in the *View/SpeakersPage.xaml**
+## ユーザーインターフェース!!!
+さて、最初の Xamarin.Forms ユーザーインタフェースとして、*View/SpeakersPage.xaml** を作っていきましょう。
 
 ### SpeakersPage.xaml
 
-For the first page of the app we will add a few controls onto the page that are stacked vertically. We can use a StackLayout to do this. Inbetween the ContentPage add the following:
+アプリの最初のページとして、縦にスタックされる(縦に連なって表示される)コントロール群を追加します。初めに、ContentPage の中に、次のように StackLayout を追加します：
 
 ```xml
  <StackLayout Spacing="0">
@@ -357,32 +357,34 @@ For the first page of the app we will add a few controls onto the page that are 
   </StackLayout>
 ```
 
-This will be the base where all of the child controls will go and will have no space inbetween them.
+今後、この StackLayout に対して、他のコントロールを追加していきます。
 
-Next, let's add a Button that has a binding to the **GetSpeakersCommand** that we created:
+次に、既に作成した **GetSpeakersCommand** にバインディングされるボタンを追加します：
 
 ```xml
 <Button Text="Sync Speakers" Command="{Binding GetSpeakersCommand}"/>
 ```
 
-Under the button we can display a loading bar when we are gathering data form the server. We can use an ActivityIndicator to do this and bind to the IsBusy property we created:
+このボタンの下に、サーバーからデータを受信しているときに使うローディング バーを表示します。ここでは、ActivityIndicator を使って、既に作ってある IsBusy プロパティにバインディングします：
 
 ```xml
 <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 ```
 
-We will use a ListView that binds to the Speakers collection to display all of the items. We can use a special property called *x:Name=""* to name any control:
+Speakers コレクションに ListView をバインディングして、全ての要素を表示します。
+また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています：
 
 ```xml
 <ListView x:Name="ListViewSpeakers"
               ItemsSource="{Binding Speakers}">
-        <!--Add ItemTemplate Here-->
+        <!--ここに ItemTemplate を追加-->
 </ListView>
 ```
 
-We still need to describe what each item looks like, and to do so, we can use an ItemTemplate that has a DataTemplate with a specific View inside of it. Xamarin.Forms contains a few default Cells that we can use, and we will use the **ImageCell** that has an image and two rows of text
+要素の表示には、個々の要素がどのように表示されるべきかを記述する必要があります。そのためには、 ItemTemplate を使いますが、この ItemTemplate は、何らかの View で表現された DataTemplate を持つ必要があります。
+Xamarin.Forms には、いくつかの既定の Cell が定義されていますが、ここでは、一つの画像と、2つのテキストを表示できる、**ImageCell** を使います。
 
-Replace <!--Add ItemTemplate Here--> with: 
+上記のコード内の &lt;!--ここに ItemTemplate を追加--&gt; を、次のコードで置き換えます：
 
 ```xml
 <ListView.ItemTemplate>
@@ -393,55 +395,56 @@ Replace <!--Add ItemTemplate Here--> with:
     </DataTemplate>
 </ListView.ItemTemplate>
 ```
-Xamarin.Forms will automatically download, cache, and display the image from the server.
 
-### Validate App.cs
+Xamarin.Forms は、サーバー上の画像を自動的にダウンロード、キャッシュした後、表示します。
 
-Open the App.cs file and you will see the entry point for the application, which is the constructor for App(). It simply creates the new SpeakersPage, and then wraps it in a navigation page to get a nice title bar.
+### App.cs を確認する
 
-### Run the App!
+App.cs を開いてみると、そこには、App() のコンストラクタがあり、そこがアプリケーションのエントリ ポイントになっています。この中では、新しい SpeackersPage を作成し、それをナビゲーション ページでラップすることで、タイトル バーを作っています。
 
-Now, you can set the iOS, Android, or UWP (Windows/VS2015 only) as the start project and start debugging.
+### アプリを実行する!
+
+遂に、iOS、Android、あるいは、UWP (Windows/VS2015 のみ) をスタートアップ プロジェクトとして設定し、デバッグを開始することができるようになりました！
 
 ![Startup project](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/020972ff-2a81-48f1-bbc7-1e4b89794369/2016-07-11_1442.png)
 
 #### iOS
-If you are on a PC then you will need to be connected to a macOS device with Xamarin installed to run and debug the app.
+PCを使っている場合、アプリの実行・デバッグを行うためには、XamarinがインストールされているmacOSのデバイスに接続する必要があります。
 
-If connected, you will see a Green connection status. Select **iPhoneSimulator as your target, and then select the Simulator to debug on.
+macOSに正しく接続されている場合、接続状態は緑になっています。ターゲットとして、 **iPhoneSimulator** を選択してから、デバッグを行うシミュレータの種類を選択します。
 
 ![iOS Setup](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/a6b32d62-cd3d-41ea-bd16-1bcc1fbe1f9d/2016-07-11_1445.png)
 
 #### Android
 
-Simply set the DevDaysSpeakers.Droid as the startup project and select a simulator to run on.
+DevDaysSpeakers.Droid をスタートアップ プロジェクトとして設定し、実行するシミュレータを選択します。
 
 #### Windows 10
 
-Ensure that you have the SQLite extension installed for UWP apps:
+最初に、UWP アプリ用に SQLite 拡張がインストールされていることを確認します：
 
-Go to **Tools->Extensions & Updates**
+**ツール->拡張機能と更新プログラム** に移動します。
 
-Under Online search for *SQLite* and ensure that you have SQlite for Univeral Windows Platform installed (current version 3.13.0)
+オンラインの検索で、*SQLite* を検索し、SQlite for Univeral Windows Platform がインストールされていることを確認します。(執筆時のバージョンは、 3.13.0)
 
 ![Sqlite](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/ace42b1e-edd8-4e65-92e7-f638b83ad533/2016-07-11_1605.png)
 
-Simply set the DevDaysSpeakers.UWP as the startup project and select debug to **Local Machine**.
+確認ができたら、DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定し、デバッグで、**ローカル コンピューター**を選択します。
 
+## Details (詳細画面)
 
-## Details
+さて、次に、このページから、ナビゲーションを経て、何らかの Details (詳細画面)を表示してみましょう。
+**SpeakersPage.xaml** に対するコード ビハインドである、**SpeakersPage.xaml.cs** を開きます。
 
-Now, let's do some navigation and display some Details. Let's upen up the code behind for **SpeakersPage.xaml** called **SpeakersPage.xaml.cs**.
+### ItemSelected イベント
 
-### ItemSelected Event
-
-In the code behind you will find the setup for the SpeakersViewModel. Under **BindingContext = vm;**, let's add an event to the **ListViewSpeakers** to get notified when an item is selected
+コード ビハインドの中には、SpeakersViewModel に対する設定があります。項目が選択されたときに通知されるように、**BindingContext = vm;** の下に、**ListViewSpeakers** へのイベントを追加します。
 
 ```csharp
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
-Let's create and fill in this method and navigate to the DetailsPage.
+そして、DetailsPage へナビゲートされるように、ListViewSpeakers_ItemSelected を作成します：
 
 ```csharp
 private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -456,21 +459,22 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
 }
 ```
 
-In the above code we check to see if the selected item is not null and then use the built in **Navigation** API to push a new page and then deselect the item.
+上のコードでは、最初に選択されている項目が null でないことを確認してから、**Navigation** API を使って、新しく作ったページをプッシュし、最後に、項目の選択を解除します。
 
 ### DetailsPage.xaml
 
-Let's now fill in the Details page. Similar to the SpeakersPage, we will use a StackLayout, but we will wrap it in a ScrollView, incase we have long text.
+さて、Details ページを作っていきます。
+SpeakersPage と同じように StackLayout を使いますが、ここでは、テキストが長すぎる場合にスクロールできるように、StackLayout を ScrollView で囲みます。
 
 ```xml
   <ScrollView Padding="10">
     <StackLayout Spacing="10">
-     <!-- Detail controls here -->
+     <!-- 詳細画面のコントロール群をここに書く -->
     </StackLayout>    
   </ScrollView>
 ```
 
-Now, let's add controls and bindings for the properties in the Speaker object:
+そして、Speaker オブジェクトのプロパティに対応するコントロールと、バインディングを追加します：
 
 ```xml
 <Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
@@ -480,24 +484,25 @@ Now, let's add controls and bindings for the properties in the Speaker object:
 <Label Text="{Binding Description}"/>
 ```
 
-Now, for fun, let's add two buttons that we will add click events to in the code behind:
+さらに、ちょっとだけ面白くするために、2つのボタンを追加します。これらのボタンには、この後、コード ビハインドでクリック時のイベントを追加します：
 
 ```xml
-<Button Text="Speak" x:Name="ButtonSpeak"/>
-<Button Text="Go to Website" x:Name="ButtonWebsite"/>
+<Button Text="読み上げる" x:Name="ButtonSpeak"/>
+<Button Text="ウェブサイトに移動" x:Name="ButtonWebsite"/>
 ```
 
-### Text to Speech
+### 読み上げる
 
-If we open up **DetailsPage.xaml.cs** we can now add a few more click handlers. Let's start with ButtonSpeak, where we will use the [Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin) to read back the speaker's description.
+**DetailsPage.xaml.cs** を開いて、2つのクリック ハンドラを足しますが、ここでは、ButtonSpeak から始めます。
+このハンドラでは、 [Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin) を使って、スピーカーの詳細を読み上げるようにします。
 
-In the constructor, add a click handler below the BindingContext:
+コンストラクタの BindingContext の下で、クリック ハンドラを追加します： 
 
 ```csharp
 ButtonSpeak.Clicked += ButtonSpeak_Clicked;
 ```
 
-Then we can add the click handler and call the cross platform API for text to speech:
+クリック ハンドラでは、Text To Speech のクロス プラットフォームな API を呼び出します：
 
 ```csharp
 private void ButtonSpeak_Clicked(object sender, EventArgs e)
@@ -506,16 +511,16 @@ private void ButtonSpeak_Clicked(object sender, EventArgs e)
 }
 ```
 
-### Open Website
-Xamarin.Forms itself has some nice APIs built write in for cross platform functionality, such as opening a URL in the default browser.
+### ウェブサイトに移動
+Xamarin.Forms には、URL を既定のブラウザで開くためのクロス プラットフォームな機能が搭載されています。
 
-Let's add another click handler, but this time for ButtonWebsite:
+今度は、ButtonWebsite のクリック ハンドラを追加します：
 
 ```csharp
 ButtonWebsite.Clicked += ButtonWebsite_Clicked;
 ```
 
-Then, we can use the Device keyword to call the OpenUri method:
+そして、Device キーワードを用いて、OpenUri メソッドを呼び出します：
 
 ```csharp
 private void ButtonWebsite_Clicked(object sender, EventArgs e)
@@ -525,8 +530,8 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 }
 ```
 
-### Compile & Run
-Now, we should be all set to compile, and run just like before!
+### コンパイル & 実行
+ここまでできたら、残りの微調整をして、前と同じようにコンパイル、実行できるようにします。
 
 ## Connect to Azure Mobile Apps
 
