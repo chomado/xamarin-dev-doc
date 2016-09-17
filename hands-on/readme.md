@@ -163,7 +163,7 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
-### Speaker の ObservableCollection 
+### Speaker の ObservableCollection
 
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
@@ -247,7 +247,7 @@ using(var client = new HttpClient())
 {
     // サーバから json データを取ってくる
     var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
-} 
+}
 ```
 
 Still inside of the **using**, we will Deserialize the json and turn it into a list of Speakers with Json.NET:
@@ -282,20 +282,20 @@ async Task GetSpeakers()
     try
     {
         IsBusy = true;
-        
+
         using(var client = new HttpClient())
         {
             //grab json from server
             var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
-            
+
             //Deserialize json
             var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
-            
+
             //Load speakers into list
             Speakers.Clear();
             foreach (var item in items)
                 Speakers.Add(item);
-        } 
+        }
     }
     catch (Exception ex)
     {
@@ -478,7 +478,7 @@ SpeakersPage と同じように StackLayout を使いますが、ここでは、
 
 ```xml
 <Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
-      
+
 <Label Text="{Binding Name}" FontSize="24"/>
 <Label Text="{Binding Title}" TextColor="Purple"/>
 <Label Text="{Binding Description}"/>
@@ -496,7 +496,7 @@ SpeakersPage と同じように StackLayout を使いますが、ここでは、
 **DetailsPage.xaml.cs** を開いて、2つのクリック ハンドラを足しますが、ここでは、ButtonSpeak から始めます。
 このハンドラでは、 [Text To Speech Plugin](https://github.com/jamesmontemagno/TextToSpeechPlugin) を使って、スピーカーの詳細を読み上げるようにします。
 
-コンストラクタの BindingContext の下で、クリック ハンドラを追加します： 
+コンストラクタの BindingContext の下で、クリック ハンドラを追加します：
 
 ```csharp
 ButtonSpeak.Clicked += ButtonSpeak_Clicked;
@@ -653,20 +653,19 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 さあ、アプリケーションを再度実行してみましょう。Azure のデータが取得できているはずです！
 
 
-## Bonus Take Home Challenges
+## 宿題
 
-Take Dev Days farther with these additional challenges that you can complete at home after Dev Days ends.
+二つの宿題でDev Daysをさらに進めましょう。
 
-### Challenge 1: Cognitive Services
-For fun, you can add the [Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api) and add another Button to the detail page to analyze the speakers face for happiness level. 
+### 宿題1: Cognitive Services
 
-Go to: http://microsoft.com/cognitive and create a new account and an API key for the Emotion service.
+[Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)を使い、詳細ページに話し手の表情から幸福度を解析するボタンを追加しましょう。
 
-Follow these steps:
+http://microsoft.com/cognitiveからアカウントとAPIキーを取得し、以下の手順を踏んでください。
 
-1.) Add **Microsoft.ProjectOxford.Emotion** nuget package to all projects
+1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加する
 
-2.) Add a new class called EmotionService and add the following code:
+2.) `EmotionService`クラスを追加する
 
 ```csharp
 public class EmotionService
@@ -687,7 +686,7 @@ public class EmotionService
         return emotionResults;
     }
 
-    //Average happiness calculation in case of multiple people
+    //複数の被検対象が存在する場合の平均幸福度算出
     public static async Task<float> GetAverageHappinessScoreAsync(string url)
     {
         Emotion[] emotionResults = await GetHappinessAsync(url);
@@ -707,54 +706,57 @@ public class EmotionService
         double result = Math.Round(score, 2);
 
         if (score >= 50)
-            return result + " % :-)";
+            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノ";
         else
-            return result + "% :-(";
+            return result + "% （；＿；）";
     }
 }
 ```
 
-3.) Now add a new button to the Details Page and expose it with **x:Name="ButtonAnalyze**
+3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze** と指定する
 
-4.) Add a new click handler and add the async keyword to it.
+4.) クリックのハンドラを追加し、`async`キーワードを指定する
 
-5.) Call 
+5.) 以下のコードを実行する
+
 ```csharp
 var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avatar);
 ```
 
-6.) Then display a pop up alert:
+6.) ポップアップアラートを表示する
 ```csharp
 await DisplayAlert("Happiness Level", level, "OK");
 ```
 
-### Challenge 2: Edit Speaker Details
+### 宿題2: 話し手の詳細を編集する
 
-In this challenge we will make the speakers Title editable.
+ここでは話し手の肩書きを編集可能にします。
 
-Open DetailsPage.xaml and change the Label that is displaying the Title from:
+`DetailsPage.xaml`を開き、肩書きを表示している`Label`
 
 ```xml
 <Label Text="{Binding Title}" TextColor="Purple"/>
 ```
 
-to an Entry with a OneWay databinding (this means when we enter text it will not change the actual data), and a Name to expose it in the code behind.
+を以下のような`OneWay`データバインディングを持つ`Entry`に変更し、`Name`を指定してください。
+
+`OneWay`にすると、テキストを入力しても実際のデータは変更されません。
 
 ```xml
-<Entry Text="{Binding Title, Mode=OneWay}" 
-             TextColor="Purple" 
+<Entry Text="{Binding Title, Mode=OneWay}"
+             TextColor="Purple"
              x:Name="EntryTitle"/>
 ```
 
-Let's add a save Button under the Go To Website button.
+保存ボタンを「ウェブサイトに行く」ボタンの下に追加しましょう。
 
 ```xml
 <Button Text="Save" x:Name="ButtonSave"/>
 ```
 
-#### Update SpeakersViewModel
+#### SpeakersViewModelを更新する
 
-Open up SpeakersViewModel and add a new method called UpdateSpeaker(Speaker speaker), that will update the speaker , sync, and refresh the list:
+`SpeakersViewModel`を開き、話し手を同期し、リストを更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
 
 ```csharp
  public async Task UpdateSpeaker(Speaker speaker)
@@ -765,10 +767,11 @@ Open up SpeakersViewModel and add a new method called UpdateSpeaker(Speaker spea
 }
 ```
 
-#### Update DetailsPage.xaml.cs
-Let's update the constructur to pass in the SpeakersViewModel for the DetailsPage:
+#### DetailsPage.xaml.csを更新する
 
-Before:
+SpeakersViewModelを受け取るようにDetailsPageのコンストラクタを変更しましょう。
+
+変更前:
 ```csharp
 Speaker speaker;
 public DetailsPage(Speaker item)
@@ -778,7 +781,7 @@ public DetailsPage(Speaker item)
     ...
 }
 ```
-After:
+変更後:
 ```csharp
 Speaker speaker;
 SpeakersViewModel vm;
@@ -791,12 +794,13 @@ public DetailsPage(Speaker item, SpeakersViewModel viewModel)
 }
 ```
 
-Under the other click handlers we will add another click handler for ButtonSave.
+`ButtonSave`のためのハンドラを追加します。
 
 ```csharp
 ButtonSave.Clicked += ButtonSave_Clicked;
 ```
-When the button is clicked, we will update the speaker, and call save and then navigate back:
+
+ボタンがクリックされたとき、話し手を更新・保存し前のページに戻ります。
 
 ```csharp
 private async void ButtonSave_Clicked(object sender, EventArgs e)
@@ -807,11 +811,11 @@ private async void ButtonSave_Clicked(object sender, EventArgs e)
 }
 ```
 
-Finally, we will need to pass in the ViewModel when we navigate in the SpeakersPage.xaml.cs in the ListViewSpeakers_ItemSelected method:
+最後に、`ListViewSpeakers_ItemSelected`で`SpeakersPage.xaml.cs`へ飛ぶときにViewModelを渡すようにする必要があります。
 
 ```csharp
-//Pass in view model now.
+//ビューモデルを渡す。
 await Navigation.PushAsync(new DetailsPage(speaker, vm));
 ```
 
-There you have it!
+できあがり！
