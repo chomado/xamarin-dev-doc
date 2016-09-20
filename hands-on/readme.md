@@ -725,7 +725,7 @@ var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avat
 
 6.) ポップアップアラートを表示する
 ```csharp
-await DisplayAlert("Happiness Level", level, "OK");
+await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level), "OK");
 ```
 
 ### 宿題2: 話し手の詳細を編集する
