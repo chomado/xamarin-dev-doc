@@ -665,7 +665,7 @@ http://microsoft.com/cognitiveからアカウントとAPIキーを取得し、�
 
 1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加する
 
-2.) `EmotionService`クラスを追加する
+2.) `EmotionService`クラスを追加する (GetHappinessAsync の中の API キーは直してください)
 
 ```csharp
 public class EmotionService
@@ -674,7 +674,7 @@ public class EmotionService
     {
         var client = new HttpClient();
         var stream = await client.GetStreamAsync(url);
-        var emotionClient = new EmotionServiceClient(CognitiveServicesKeys.Emotion);
+        var emotionClient = new EmotionServiceClient("INSERT_EMOTION_SERVICE_KEY_HERE");
 
         var emotionResults = await emotionClient.RecognizeAsync(stream);
 
@@ -725,7 +725,7 @@ var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avat
 
 6.) ポップアップアラートを表示する
 ```csharp
-await DisplayAlert("Happiness Level", level, "OK");
+await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level), "OK");
 ```
 
 ### 宿題2: 話し手の詳細を編集する
