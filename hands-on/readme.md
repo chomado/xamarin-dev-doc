@@ -541,11 +541,11 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 
 ポータルにアクセスしたら、**+ 新規** ボタンを選択し、**mobile apps** を検索します。下の図のように検索結果が表示されますので、**Mobile Apps Quickstart** を選択します。
 
-![Quickstart](ConnectAzure_Quickstart.png)
+![Quickstart](image/ConnectAzure_Quickstart.png)
 
 Quickstart のブレードが開くので、**作成** をクリックします。
 
-![Create quickstart](ConnectAzure_CreateQuickstart.png)
+![Create quickstart](image/ConnectAzure_CreateQuickstart.png)
 
 4つの設定項目がある設定ブレードが開きます:
 
@@ -569,11 +569,11 @@ Quickstart のブレードが開くので、**作成** をクリックします�
 
 > 注: **価格レベルを選択** ブレードの右上にある **すべて表示** をクリックすると F1 Free の価格レベルが表示され選択できるようになります。
 
-![service plan](ConnectAzure_ServicePlan.png)
+![service plan](image/ConnectAzure_ServicePlan.png)
 
 最後に **ダッシュボードにピン留めする** をチェックし、［作成］をクリックします:
 
-![Create](ConnectAzure_Create.png)
+![Create](image/ConnectAzure_Create.png)
 
 Mobile Apps のセットアップが完了するまでに 3～5 分ほど掛かります。コードに戻りましょう！
 
@@ -638,7 +638,7 @@ Azure portal に戻りデータベースを見てみましょう。
 
 Quickstart が終了したら、以下の画面が見えるはずです。または、ダッシュボードのピンをタップしても行けます:
 
-![Quickstart](ConnectAzure_Dashboard.png)
+![Quickstart](image/ConnectAzure_Dashboard.png)
 
 **Features** 内の **Easy Tables** を選択します。
 
@@ -648,7 +648,7 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 ファイルを選択すると、新しいテーブル名が追加され、フィールドを探して追加してくれます。その後、Start Upload をクリックします。
 
-![upload data](ConnectAzure_AddCsv.png)
+![upload data](image/ConnectAzure_AddCsv.png)
 
 さあ、アプリケーションを再度実行してみましょう。Azure のデータが取得できているはずです！
 
