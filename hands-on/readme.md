@@ -139,7 +139,7 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 
 ### IsBusy プロパティ
 
-この `SpeakersViewModel` クラスの中に、bool値を get/set するための、バッキングフィールド(backing field)と 自動プロパティ(自動実装プロパティ/auto-properties)を作りましょう。
+この `SpeakersViewModel` クラスの中に、bool値を get/set するための、バッキングフィールド(backing field)と、bool型プロパティのためのアクセサを作りましょう。
 
 まず、バッキングフィールドを作ります。
 
