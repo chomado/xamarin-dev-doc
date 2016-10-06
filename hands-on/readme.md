@@ -139,7 +139,7 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 
 ### IsBusy プロパティ
 
-この `SpeakersViewModel` クラスの中に、bool値を get/set するための、バッキングフィールド(backing field)と 自動プロパティ(自動実装プロパティ/auto-properties)を作りましょう。
+この `SpeakersViewModel` クラスの中に、bool値を get/set するための、バッキングフィールド(backing field)と、bool型プロパティのためのアクセサを作りましょう。
 
 まず、バッキングフィールドを作ります。
 
@@ -240,37 +240,37 @@ async Task GetSpeakers()
 
 `IsBusy` は最初は true にセットしておき、そしてサーバーに接続しようとした時と、終わった時は false にセットします。
 
-そして、`try`ブロックの中で、サーバから json データを取ってくるために `HttpClient` を使います。
+そして、`try`ブロックの中で、サーバーから json データを取ってくるために `HttpClient` を使います。
 
 ```csharp
 using(var client = new HttpClient())
 {
-    // サーバから json データを取ってくる
+    // サーバーから json を取得します
     var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
 }
 ```
 
-Still inside of the **using**, we will Deserialize the json and turn it into a list of Speakers with Json.NET:
+引き続き **using** 句の中で、Json.NET を使用して json をデシリアライズし、Speaker のリストに格納します:
 
 ```csharp
 var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
 ```
 
-Still inside of the **using**, we can will clear the speakers and then load them into the ObservableCollection:
+引き続き **using** 句の中で、Speakers をクリアして、リスト内の item を ObservableCollection に読み込ませます:
 
 ```csharp
 Speakers.Clear();
 foreach (var item in items)
     Speakers.Add(item);
 ```
-If anything goes wrong the **catch** will save out the exception and AFTER the finally block we can pop up an alert:
+何か問題があれば **catch** 句で例外を保存し、最後の finally 句でポップアップアラートを表示します:
 
 ```csharp
 if (error != null)
     await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
 ```
 
-The completed code should look like:
+完全なコードは次のようになるはずです:
 
 ```csharp
 async Task GetSpeakers()
@@ -285,13 +285,13 @@ async Task GetSpeakers()
 
         using(var client = new HttpClient())
         {
-            //grab json from server
+            //サーバーから json を取得します
             var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
 
-            //Deserialize json
+            //json をデシリアライズします
             var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
 
-            //Load speakers into list
+            //リストを Speakers に読み込ませます
             Speakers.Clear();
             foreach (var item in items)
                 Speakers.Add(item);
@@ -312,19 +312,19 @@ async Task GetSpeakers()
 }
 ```
 
-Our main method for gettering data is now complete!
+データを取得するメインのメソッドはこれで完成です！
 
 #### GetSpeakers Command
 
-Intead of invoking this method directly, we will expose it with a **Command**. A Command has an interface that knows what method to invoke and has an optional way of describing if the Command is enabled.
+このメソッドを直接実行する代わりに、私たちは **Command** を公開します。Command は実行されるメソッドを知り、任意の Command が実行可能かを説明するインターフェースを持っています。
 
-Where we created our ObservableCollection<Speaker> Speakers {get;set;} create a new Command called **GetSpeakersCommand**:
+ObservableCollection<Speaker> Speakers {get;set;} を作成した場所で、**GetSpeakersCommand** Command を作成しましょう:
 
 ```csharp
 public Command GetSpeakersCommand { get; set; }
 ```
 
-Inside of the **SpeakersViewModel()** constructor we can create the GetSpeakersCommand and assign it a method to use. We can also pass in an enabled flag leveraging our IsBusy:
+**SpeakersViewModel()** のコンストラクターの中で GetSpeakersCommand を作成し、使用するメソッドを割り当てます。更に IsBusy プロパティに影響を与える enabled フラグも渡します:
 
 ```csharp
 GetSpeakersCommand = new Command(
@@ -332,7 +332,7 @@ GetSpeakersCommand = new Command(
                 () => !IsBusy);
 ```
 
-The only modification that we will have to make is when we set the IsBusy property, as we will want to re-evaluate the enabled function that we created. In the **set** of **IsBusy** simply invoke the **ChangeCanExecute** method on the **GetSpeakersCommand** such as:
+この後修正するのは、私たちが作成した enabled 関数を再評価する IsBusy プロパティをいつセットするか？です。**IsBusy** の **set** でシンプルに **ChangeCanExecute** メソッドを次のように実行します:
 
 ```csharp
 set
@@ -541,11 +541,11 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 
 ポータルにアクセスしたら、**+ 新規** ボタンを選択し、**mobile apps** を検索します。下の図のように検索結果が表示されますので、**Mobile Apps Quickstart** を選択します。
 
-![Quickstart](ConnectAzure_Quickstart.png)
+![Quickstart](image/ConnectAzure_Quickstart.png)
 
 Quickstart のブレードが開くので、**作成** をクリックします。
 
-![Create quickstart](ConnectAzure_CreateQuickstart.png)
+![Create quickstart](image/ConnectAzure_CreateQuickstart.png)
 
 4つの設定項目がある設定ブレードが開きます:
 
@@ -569,11 +569,11 @@ Quickstart のブレードが開くので、**作成** をクリックします�
 
 > 注: **価格レベルを選択** ブレードの右上にある **すべて表示** をクリックすると F1 Free の価格レベルが表示され選択できるようになります。
 
-![service plan](ConnectAzure_ServicePlan.png)
+![service plan](image/ConnectAzure_ServicePlan.png)
 
 最後に **ダッシュボードにピン留めする** をチェックし、［作成］をクリックします:
 
-![Create](ConnectAzure_Create.png)
+![Create](image/ConnectAzure_Create.png)
 
 Mobile Apps のセットアップが完了するまでに 3～5 分ほど掛かります。コードに戻りましょう！
 
@@ -638,7 +638,7 @@ Azure portal に戻りデータベースを見てみましょう。
 
 Quickstart が終了したら、以下の画面が見えるはずです。または、ダッシュボードのピンをタップしても行けます:
 
-![Quickstart](ConnectAzure_Dashboard.png)
+![Quickstart](image/ConnectAzure_Dashboard.png)
 
 **Features** 内の **Easy Tables** を選択します。
 
@@ -648,7 +648,7 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 ファイルを選択すると、新しいテーブル名が追加され、フィールドを探して追加してくれます。その後、Start Upload をクリックします。
 
-![upload data](ConnectAzure_AddCsv.png)
+![upload data](image/ConnectAzure_AddCsv.png)
 
 さあ、アプリケーションを再度実行してみましょう。Azure のデータが取得できているはずです！
 
