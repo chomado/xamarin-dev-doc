@@ -661,7 +661,7 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 [Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)を使い、詳細ページに話し手の表情から幸福度を解析するボタンを追加しましょう。
 
-http://microsoft.com/cognitiveからアカウントとAPIキーを取得し、以下の手順を踏んでください。
+http://microsoft.com/cognitive からアカウントとAPIキーを取得し、以下の手順を踏んでください。
 
 1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加する
 
