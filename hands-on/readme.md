@@ -345,7 +345,7 @@ set
 ```
 
 ## ユーザーインターフェース!!!
-さて、最初の Xamarin.Forms ユーザーインタフェースとして、*View/SpeakersPage.xaml** を作っていきましょう。
+さて、最初の Xamarin.Forms ユーザーインタフェースとして、**View/SpeakersPage.xaml** を作っていきましょう。
 
 ### SpeakersPage.xaml
 
@@ -713,7 +713,7 @@ public class EmotionService
 }
 ```
 
-3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze** と指定する
+3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze"** と指定する
 
 4.) クリックのハンドラを追加し、`async`キーワードを指定する
 
