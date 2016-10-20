@@ -168,10 +168,10 @@ public bool IsBusy
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
 
-[TODO] We will use an ObservableCollection that will be cleared and then loaded with speakers.
+インターネットから取得してきた speaker のデータを格納するために `ObservableCollection` を使います。
 なぜ `ObservableCollection` を使うかというと、これは要素(コレクションの中身)を追加とか削除とかすると発火する `CollectionChanged` というイベントを最初から持っているからです。
 
-[TODO] In the class above the constructor simply create an autoproperty:
+コンストラクタのすぐ上に、自動プロパティを作ります。
 
 ```csharp
 public ObservableCollection<Speaker> Speakers { get; set; }
