@@ -26,12 +26,12 @@ Windows でも Mac でも良いです。
 
 # さぁ手を動かそう！
 
-まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab) を開いておいてください。    
-[https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)
+まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。    
+[https://github.com/xamarin/dev-days-labs](https://github.com/xamarin/dev-days-labs)
 
 ## 手順 1 ：ソリューションファイルを開く
 
-[Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
+[Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
 （Windows の場合は Visual Studio、Mac OS の場合は Xamarin Studio で開きます。）
 
 ソリューションタブを見ると、4つのプロジェクトで構成されているのが分かります。
