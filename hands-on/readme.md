@@ -2,7 +2,7 @@
 
 これは、Xamarin.Forms と MSのクラウドサービス Microsoft Azure を使った簡単なアプリを作るハンズオンです。
 
-Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手順書『[Xamrin Dev Days Hands On Lab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)』の日本語訳版をここに載せます。
+Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手順書『[Xamrin Dev Days Hands On Lab](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab)』の日本語訳版をここに載せます。
 
 
 ## 今回 何を作るの？
@@ -26,12 +26,12 @@ Windows でも Mac でも良いです。
 
 # さぁ手を動かそう！
 
-まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab) を開いておいてください。    
-[https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)
+まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab) を開いておいてください。    
+[https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab)
 
 ## 手順 1 ：ソリューションファイルを開く
 
-[Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
+[Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
 （Windows の場合は Visual Studio、Mac OS の場合は Xamarin Studio で開きます。）
 
 ソリューションタブを見ると、4つのプロジェクトで構成されているのが分かります。
@@ -55,7 +55,7 @@ Windows でも Mac でも良いです。
 まず最初に我々がしなければならないことは、インターネットから、すべての NuGet パッケージをリストアすることです。
 
 どうやるかというと、ソリューションタブの中の『ソリューション』を
-右クリックして、『`Restore NuGet packages`』をクリックします。
+右クリックして、『`Restore NuGet packages`(NuGetパッケージの復元)』をクリックします。
 
 ![Restore NuGet packages](https://camo.githubusercontent.com/45c5469cf5ce35c1bf6b7dc2d235351874359bcc/687474703a2f2f636f6e74656e742e73637265656e636173742e636f6d2f75736572732f4a616d65734d6f6e74656d61676e6f2f666f6c646572732f4a696e672f6d656469612f61333161366266662d623435642d346336302d613630322d3133353966393834653830622f323031362d30372d31315f313332382e706e67)
 
@@ -106,7 +106,7 @@ public class SpeakersViewModel : INotifyPropertyChanged
 ```
 
 そして    
-右クリック → 『`Implement Interface`』をクリック    
+右クリック → 『`Implement Interface`(インターフェースを実装します)』をクリック    
 で、以下のコードが生えます。
 
 ```csharp
