@@ -2,7 +2,7 @@
 
 これは、Xamarin.Forms と MSのクラウドサービス Microsoft Azure を使った簡単なアプリを作るハンズオンです。
 
-Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手順書『[Xamrin Dev Days Hands On Lab](https://github.com/xamarin/dev-days-labs/tree/2016/HandsOnLab)』の日本語訳版をここに載せます。
+Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手順書『[Xamrin Dev Days Hands On Lab](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab)』の日本語訳版をここに載せます。
 
 
 ## 今回 何を作るの？
@@ -38,14 +38,14 @@ Windows でも Mac でも良いです。
 
 |#|プロジェクト名|概要|実行環境|
 |----|----|----|----|
-|1 | `DevDaysSpeakers (Portable)`|共通コード部分 (model とか view とか view model とか) が全部入った PCL (Portable Class Library )。|（不問）|
+|1 | `DevDaysSpeakers`|共通コード部分 (model とか view とか view model とか) が全部入った Shared Project。|（不問）|
 |2 | `DevDaysSpeakers.Droid`|Android アプリケーション|（不問）|
 |3 | `DevDaysSpeakers.iOS`|iOS アプリケーション|実行には Mac が必要|
 |4 | `DevDaysSpeakers.UWP`|Windows 10 UWP アプリケーション|実行には Windows 10 & VS 2015 が必要|
 
-![DevDaysSpeakers.sln](https://camo.githubusercontent.com/29d9c125b34e962b95034db26e7195a3f53d82b0/687474703a2f2f636f6e74656e742e73637265656e636173742e636f6d2f75736572732f4a616d65734d6f6e74656d61676e6f2f666f6c646572732f4a696e672f6d656469612f34346634636161392d656662392d343430352d393564342d3733343136303865316330612f506f727461626c652e706e67)
+![DevDaysSpeakers.sln](./image/Solution001.png)
 
-共通部分である `DevDaysSpeakers (Portable)` プロジェクトの中に、空白の XAMLページ ([View/DetailsPage.xaml](https://github.com/xamarin/dev-days-labs/blob/master/HandsOnLab/Start/DevDaysSpeakers/DevDaysSpeakers/View/DetailsPage.xaml)など) がありますが、    
+共通部分である `DevDaysSpeakers` プロジェクトの中に、空白の XAMLページ ([View/DetailsPage.xaml](https://github.com/xamarin/dev-days-labs/blob/master/HandsOnLab/Start/DevDaysSpeakers/DevDaysSpeakers/View/DetailsPage.xaml)など) がありますが、    
 これはこのハンズオンの中で使うことになるものです。
 
 ## 手順 2 : NuGet Restore
@@ -57,7 +57,7 @@ Windows でも Mac でも良いです。
 どうやるかというと、ソリューションタブの中の『ソリューション』を
 右クリックして、『`Restore NuGet packages`』をクリックします。
 
-![Restore NuGet packages](https://camo.githubusercontent.com/45c5469cf5ce35c1bf6b7dc2d235351874359bcc/687474703a2f2f636f6e74656e742e73637265656e636173742e636f6d2f75736572732f4a616d65734d6f6e74656d61676e6f2f666f6c646572732f4a696e672f6d656469612f61333161366266662d623435642d346336302d613630322d3133353966393834653830622f323031362d30372d31315f313332382e706e67)
+![Restore NuGet packages](./image/Solution002.png)
 
 
 ## 手順 3 : Model を いじる
@@ -106,8 +106,11 @@ public class SpeakersViewModel : INotifyPropertyChanged
 ```
 
 そして    
-右クリック → 『`Implement Interface`』をクリック    
-で、以下のコードが生えます。
+`INotifyPropertyChanged` にオンマウスして Ctrl＋. (コントロールキーを押しながらピリオドキーを押す) → ［インターフェイスを実装します］を選択するか、`INotifyPropertyChanged` を右クリックすると表示される［クイックアクションとリファクタリング］をクリックし、［インターフェイスを実装します］をクリックします。
+
+> OS X の場合は、オンマウスして Option + Enter →［インターフェイスを実装します］を選択するか、右クリックすると表示される［クイック修正］をクリックし、［インターフェイスを実装します］をクリックします。
+
+これで以下のコードが自動生成されます。
 
 ```csharp
 public event PropertyChangedEventHandler PropertyChanged;
@@ -316,7 +319,7 @@ async Task GetSpeakers()
 
 #### GetSpeakers Command
 
-このメソッドを直接実行する代わりに、私たちは **Command** を公開します。Command は実行されるメソッドを知り、任意の Command が実行可能かを説明するインターフェースを持っています。
+このメソッドを直接実行する代わりに、私たちは **Command** を公開します。Command は実行されるメソッドを知り、任意の Command が実行可能かを説明するインターフェイスを持っています。
 
 ObservableCollection<Speaker> Speakers {get;set;} を作成した場所で、**GetSpeakersCommand** Command を作成しましょう:
 
@@ -406,30 +409,33 @@ App.cs を開いてみると、そこには、App() のコンストラクタが�
 
 遂に、iOS、Android、あるいは、UWP (Windows/VS2015 のみ) をスタートアップ プロジェクトとして設定し、デバッグを開始することができるようになりました！
 
-![Startup project](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/020972ff-2a81-48f1-bbc7-1e4b89794369/2016-07-11_1442.png)
+![Startup project](./image/AppRun001.png)
 
 #### iOS
 PCを使っている場合、アプリの実行・デバッグを行うためには、XamarinがインストールされているmacOSのデバイスに接続する必要があります。
 
 macOSに正しく接続されている場合、接続状態は緑になっています。ターゲットとして、 **iPhoneSimulator** を選択してから、デバッグを行うシミュレータの種類を選択します。
 
-![iOS Setup](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/a6b32d62-cd3d-41ea-bd16-1bcc1fbe1f9d/2016-07-11_1445.png)
+![iOS Setup](./image/AppRun002.png)
+
+> [メモ]    
+[iOS Simulator (for Windows) - Xamarin](https://developer.xamarin.com/guides/cross-platform/windows/ios-simulator/) を使用すると、Windows 側に iOS Simulator の画面が転送されます。2016/10/21 現在の既知の問題として、Xcode 8ではパフォーマンスが悪いことが報告されていますので、必要に応じて使用してください。
+
 
 #### Android
 
-DevDaysSpeakers.Droid をスタートアップ プロジェクトとして設定し、実行するシミュレータを選択します。
+DevDaysSpeakers.Droid をスタートアップ プロジェクトとして設定し、実行するエミュレーターを選択します。
 
 #### Windows 10
 
-最初に、UWP アプリ用に SQLite 拡張がインストールされていることを確認します：
+DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定し、［ソリューションプラットフォーム］から **x86** を、デバッグ対象から **ローカル コンピューター** を選択します。
 
-**ツール->拡張機能と更新プログラム** に移動します。
-
-オンラインの検索で、*SQLite* を検索し、SQlite for Univeral Windows Platform がインストールされていることを確認します。(執筆時のバージョンは、 3.13.0)
-
+> メモ：元のドキュメントでは SQLite 拡張機能をインストールしていますが、インストールしなくても動作するようです。<br />
+<br />
+最初に、UWP アプリ用に SQLite 拡張がインストールされていることを確認します：        
+**ツール->拡張機能と更新プログラム** に移動します。    
+オンラインの検索で、*SQLite* を検索し、SQlite for Univeral Windows Platform がインストールされていることを確認します。(執筆時のバージョンは、 3.13.0)    
 ![Sqlite](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/ace42b1e-edd8-4e65-92e7-f638b83ad533/2016-07-11_1605.png)
-
-確認ができたら、DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定し、デバッグで、**ローカル コンピューター**を選択します。
 
 ## Details (詳細画面)
 
@@ -531,7 +537,20 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 ```
 
 ### コンパイル & 実行
-ここまでできたら、残りの微調整をして、前と同じようにコンパイル、実行できるようにします。
+
+ここまでできたら、残りの微調整をして、前と同じようにコンパイル、実行できるようにします。実行画面は次のようになります。
+
+**Android**
+
+<img src="image/Run_Android01.png" width="300" /> <img src="image/Run_Android02.png" width="300" />
+
+**iOS**
+
+<img src="image/Run_iOS01.png" width="300" /> <img src="image/Run_iOS02.png" width="300" />
+
+**UWP**
+
+<img src="image/Run_UWP01.png" width="300" /> <img src="image/Run_UWP02.png" width="300" />
 
 ## Azure Mobile Apps に接続します
 
@@ -545,7 +564,7 @@ private void ButtonWebsite_Clicked(object sender, EventArgs e)
 
 Quickstart のブレードが開くので、**作成** をクリックします。
 
-![Create quickstart](image/ConnectAzure_CreateQuickstart.png)
+<img src="image/ConnectAzure_CreateQuickstart.png" width="500" />
 
 4つの設定項目がある設定ブレードが開きます:
 
@@ -567,7 +586,7 @@ Quickstart のブレードが開くので、**作成** をクリックします�
 
 このフィールドをクリックして **新規作成** を選択し、一意の名前を付けます。場所 (通常は近い場所を選択します) を選択し、F1 Free の価格レベルを選択します:
 
-> 注: **価格レベルを選択** ブレードの右上にある **すべて表示** をクリックすると F1 Free の価格レベルが表示され選択できるようになります。
+> メモ: **価格レベルを選択** ブレードの右上にある **すべて表示** をクリックすると F1 Free の価格レベルが表示され選択できるようになります。
 
 ![service plan](image/ConnectAzure_ServicePlan.png)
 
@@ -581,11 +600,11 @@ Azure バックエンドを私たちのモバイルアプリに追加するた�
 
 ### AzureService.cs のアップデート
 
-`Service/AzureService.cs` を開き、必要な編集していきましょう。
+**Service/AzureService.cs** を開き、必要な編集していきましょう。
 
-`Initialize()` メソッド内の `appUrl` の `OUR-APP-NAME-HERE` を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば `"https://xxxxspeakers..azurewebsites.net"` になるはずです。
+**Initialize()** メソッド内の appUrl の **OUR-APP-NAME-HERE** を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば "https://xxxxspeakers..azurewebsites.net" になるはずです。
 
-次に `GetSpeakers()` メソッドを table を初期化して同期し、Nameを基準に昇順で並び替える以下の行で置き換えましょう:
+次に **GetSpeakers()** メソッドを table を初期化して同期し、Nameを基準に昇順で並び替える以下の行で置き換えましょう:
 
 ```csharp
 await Initialize();
@@ -593,7 +612,7 @@ await SyncSpeakers();
 return await table.OrderBy(s => s.Name).ToEnumerableAsync();
 ```
 
-次に `SyncSpeakers()` の `try` 句にローカルの table をプッシュして同期する以下の行を追加しましょう:
+次に **SyncSpeakers()** の try 句にローカルの table をプッシュして同期する以下の行を追加しましょう:
 
 ```csharp
 await Client.SyncContext.PushAsync();
@@ -604,11 +623,11 @@ AzureService.cs の編集はこれで終了です。
 
 ### SpeakersViewModel.cs のアップデート
 
-次に `ViewModel/SpeakersViewModel.cs` を編集していきましょう。
+次に **ViewModel/SpeakersViewModel.cs** を編集していきましょう。
 
-`GetSpeakers()` メソッドの `try/catch` 句内で JSON を取得していた `using` 句をすべて削除します。
+**GetSpeakers()** メソッドの try/catch 句で JSON を取得していた **using** 句をすべて削除します。
 
-先ほど修正した `AzureService` を Dependency Service としてインスタンス化し、Azure Mobile Apps の table から Speakers のデータを取得します。
+そのまま try 句で先ほど修正した **AzureService** を Dependency Service としてインスタンス化し、Azure Mobile Apps の table から Speakers のデータを取得する以下の行を追加しましょう:
 
 ```csharp
 var service = DependencyService.Get<AzureService>();
@@ -619,13 +638,30 @@ foreach (var item in items)
 	Speakers.Add(item);
 ```
 
+try 句は次のようになります。
+
+```csharp
+try
+{
+    IsBusy = true;
+
+    var service = DependencyService.Get<AzureService>();
+    var items = await service.GetSpeakers();
+
+    Speakers.Clear();
+    foreach (var item in items)
+        Speakers.Add(item);
+}
+```
+
+
 これで私たちのアプリに必要な実装がすべて終了しました！
 
 Azure portal に戻りデータベースを見てみましょう。
 
 Quickstart が終了したら、以下の画面が見えるはずです。または、ダッシュボードのピンをタップしても行けます:
 
-![Quickstart](image/ConnectAzure_Dashboard.png)
+<img src="image/ConnectAzure_Dashboard.png" width="500" />
 
 **Features** 内の **Easy Tables** を選択します。
 
@@ -650,9 +686,40 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 http://microsoft.com/cognitive からアカウントとAPIキーを取得し、以下の手順を踏んでください。
 
-1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加する
+#### Cognitive Serivce Emotion API のアカウント作成
 
-2.) `EmotionService`クラスを追加する (GetHappinessAsync の中の API キーは直してください)
+上記リンクから Web にアクセスします。Microsoft アカウントでログインし、**Get started for free** をクリックします。
+
+![Cognitive Serivce Emotion API](image/Cognitive_Emotion01.png)
+
+画面が遷移します。**Emotion - Preview** にチェックが入っていることを確認し、画面下の Term、Privacy Policy のチェックをオンにして、**Subscribe** をクリックします。(Contact me with promotional offers and updates about Microsoft Cognitive Services. はチェックしなくても構いません)
+
+![Cognitive Serivce Emotion API](image/Cognitive_Emotion02.png)
+
+**My free subscriptions** に **Emotion** が登録されているので、**Show** をクリックして、Key1 のキーを控えておきます。
+
+![Cognitive Serivce Emotion API](image/Cognitive_Emotion03.png)
+
+#### Visual Studio での作業
+
+1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加します。
+
+![Microsoft.ProjectOxford.Emotion](image/Cognitive01.png)
+
+2.) `EmotionService`クラスを追加します (GetHappinessAsync の中の API キーは直してください)
+
+必要な using は以下の通りです。
+
+```csharp
+using Microsoft.ProjectOxford.Emotion;
+using Microsoft.ProjectOxford.Emotion.Contract;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+```
+
+以下のクラスを作成します。
 
 ```csharp
 public class EmotionService
@@ -700,17 +767,17 @@ public class EmotionService
 }
 ```
 
-3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze"** と指定する
+3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze"** と指定します。
 
-4.) クリックのハンドラを追加し、`async`キーワードを指定する
+4.) クリックのハンドラを追加し、`async`キーワードを指定します。
 
-5.) 以下のコードを実行する
+5.) 以下のコードを追加します。
 
 ```csharp
 var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avatar);
 ```
 
-6.) ポップアップアラートを表示する
+6.) ポップアップアラートを表示します。
 ```csharp
 await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level), "OK");
 ```
@@ -735,24 +802,36 @@ await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level),
              x:Name="EntryTitle"/>
 ```
 
-保存ボタンを「ウェブサイトに行く」ボタンの下に追加しましょう。
+保存ボタンを「ウェブサイトに移動」ボタンの下に追加しましょう。
 
 ```xml
-<Button Text="Save" x:Name="ButtonSave"/>
+<Button Text="保存" x:Name="ButtonSave"/>
 ```
 
-#### SpeakersViewModelを更新する
+#### SpeakersViewModel を更新する
 
-`SpeakersViewModel`を開き、話し手を同期し、リストを更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
+`AzureService.cs`を開き、話し手を同期し、リストを更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
 
 ```csharp
- public async Task UpdateSpeaker(Speaker speaker)
+public async Task UpdateSpeaker(Speaker speaker)
 {
+    await Initialize();
     await table.UpdateAsync(speaker);
-    await table.Sync();
-    await GetSpeakers();
+    await SyncSpeakers();
 }
 ```
+
+`SpeakersViewModel.cs` を開き、同じようなメソッドを追加します:
+
+```csharp
+public async Task UpdateSpeaker(Speaker speaker)
+{
+    var service = DependencyService.Get<AzureService>();
+    await service.UpdateSpeaker(speaker);
+    await GetSpeakers();         
+}
+```
+
 
 #### DetailsPage.xaml.csを更新する
 
@@ -798,11 +877,15 @@ private async void ButtonSave_Clicked(object sender, EventArgs e)
 }
 ```
 
-最後に、`ListViewSpeakers_ItemSelected`で`SpeakersPage.xaml.cs`へ飛ぶときにViewModelを渡すようにする必要があります。
+最後に、**SpeakersPage.xaml.cs** の `ListViewSpeakers_ItemSelected`で`SpeakersPage.xaml.cs`へ飛ぶときにViewModelを渡すようにする必要があります。
 
 ```csharp
 //ビューモデルを渡す。
 await Navigation.PushAsync(new DetailsPage(speaker, vm));
 ```
+
+**保存** ボタンをタップすると、Mobile Apps の Easy Table の **Title** 列を修正します。
+
+![Modified](image/save01.png)
 
 できあがり！
