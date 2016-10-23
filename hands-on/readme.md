@@ -50,7 +50,7 @@ Windows でも Mac でも良いです。
 
 ## 手順 2 : NuGet Restore
 
-すべてのプロジェクトに於いて、必要な NuGet パッケージはすべてインストール済みとなっています。なので、このハンズオンでは、新たにパッケージを追加でインストールする必要はありません。    
+すべてのプロジェクトにおいて、必要な NuGet パッケージはすべてインストール済みとなっています。なので、このハンズオンでは、新たにパッケージを追加でインストールする必要はありません。
 
 まず最初に我々がしなければならないことは、インターネットから、すべての NuGet パッケージをリストアすることです。
 
@@ -83,7 +83,7 @@ Xamarin.Forms の view で、どのようにデータを表示するかのすべ
 
 ### INotifyPropertyChanged をインプリメントしよう
 
-`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェイス) は、 MVVM フレームワークに於いて、重要なデータバインディングです。 それ（INotifyPropertyChanged）は、オブジェクトの状態に変更があった場合に、ユーザーインターフェースが通知を受け取ることができる仕組みを提供します。
+`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェース) は、 MVVM フレームワークにおいて、重要なデータバインディングです。 それ（INotifyPropertyChanged）は、オブジェクトの状態に変更があった場合に、ユーザーインターフェースが通知を受け取ることができる仕組みを提供します。
 
 今こうなっています：
 
@@ -168,10 +168,10 @@ public bool IsBusy
 [メモ]    
 `ObservableCollection` (自分の中身が変わったことを検知する仕組みを持っているコレクション)     
 
-[TODO] We will use an ObservableCollection that will be cleared and then loaded with speakers.
+インターネットから取得してきた speaker のデータを格納するために `ObservableCollection` を使います。
 なぜ `ObservableCollection` を使うかというと、これは要素(コレクションの中身)を追加とか削除とかすると発火する `CollectionChanged` というイベントを最初から持っているからです。
 
-[TODO] In the class above the constructor simply create an autoproperty:
+コンストラクタのすぐ上に、自動プロパティを作ります。
 
 ```csharp
 public ObservableCollection<Speaker> Speakers { get; set; }
@@ -345,7 +345,7 @@ set
 ```
 
 ## ユーザーインターフェース!!!
-さて、最初の Xamarin.Forms ユーザーインタフェースとして、*View/SpeakersPage.xaml** を作っていきましょう。
+さて、最初の Xamarin.Forms ユーザーインタフェースとして、**View/SpeakersPage.xaml** を作っていきましょう。
 
 ### SpeakersPage.xaml
 
@@ -577,62 +577,49 @@ Quickstart のブレードが開くので、**作成** をクリックします�
 
 Mobile Apps のセットアップが完了するまでに 3～5 分ほど掛かります。コードに戻りましょう！
 
+Azure バックエンドを私たちのモバイルアプリに追加するために、更にコードを修正していきます。
 
-### App.cs のアップデート
-Azure バックエンドを私たちのモバイルアプリに追加するために、以前のプレゼンテーションで見た [Azure App Service Helpers library](https://www.nuget.org/packages/AppService.Helpers/1.1.1-beta) のたった4行のコードを使用します。
+### AzureService.cs のアップデート
 
-DevDaysSpeakers/App.cs ファイルの Azure Client のコンストラクターの上に、Static プロパティを追加しましょう:
+`Service/AzureService.cs` を開き、必要な編集していきましょう。
 
-```csharp
-public static IEasyMobileServiceClient AzureClient { get; set; }
-```
+`Initialize()` メソッド内の `appUrl` の `OUR-APP-NAME-HERE` を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば `"https://xxxxspeakers..azurewebsites.net"` になるはずです。
 
-コンストラクターに、クライアントを作成し、テーブルを登録する以下のシンプルな行を追加します:
+次に `GetSpeakers()` メソッドを table を初期化して同期し、Nameを基準に昇順で並び替える以下の行で置き換えましょう:
 
 ```csharp
-AzureClient = EasyMobileServiceClient.Create();
-AzureClient.Initialize("https://YOUR-APP-NAME-HERE.azurewebsites.net");
-AzureClient.RegisterTable<Model.Speaker>();
-AzureClient.FinalizeSchema();
+await Initialize();
+await SyncSpeakers();
+return await table.OrderBy(s => s.Name).ToEnumerableAsync();
 ```
 
-「YOUR-APP-NAME-HERE」をあなたの指定したアプリ名でアップデートしていることを確認してください。
+次に `SyncSpeakers()` の `try` 句にローカルの table をプッシュして同期する以下の行を追加しましょう:
 
+```csharp
+await Client.SyncContext.PushAsync();
+await table.PullAsync("allSpeakers", table.CreateQuery());
+```
+
+AzureService.cs の編集はこれで終了です。
 
 ### SpeakersViewModel.cs のアップデート
 
-ViewModel で、テーブルの参照を取得する別の Private プロパティを追加しましょう。コンストラクターの上に追加します:
+次に `ViewModel/SpeakersViewModel.cs` を編集していきましょう。
+
+`GetSpeakers()` メソッドの `try/catch` 句内で JSON を取得していた `using` 句をすべて削除します。
+
+先ほど修正した `AzureService` を Dependency Service としてインスタンス化し、Azure Mobile Apps の table から Speakers のデータを取得します。
 
 ```csharp
-ITableDataStore<Speaker> table;
+var service = DependencyService.Get<AzureService>();
+var items = await service.GetSpeakers();
+
+Speakers.Clear();
+foreach (var item in items)
+	Speakers.Add(item);
 ```
 
-コンストラクター内で Static の AzureClient を使用してテーブルを取得します:
-
-```csharp
-table = App.AzureClient.Table<Speaker>();
-```
-
-#### async Task GetSpeakers() のアップデート
-
-次に、HttpClient の呼び出しの中で、テーブルのクエリを取得しましょう:
-
-*try* ブロックのコードを以下のように修正します:
-
-```csharp
- try
-{
-    IsBusy = true;
-
-    var items = await table.GetItemsAsync();
-
-    Speakers.Clear();
-    foreach (var item in items)
-        Speakers.Add(item);
-}
-```
-
-これで私たちのアプリに必要な実装がすべて終了しました！素晴らしいですよね！たった7行のコードです！
+これで私たちのアプリに必要な実装がすべて終了しました！
 
 Azure portal に戻りデータベースを見てみましょう。
 
@@ -650,7 +637,7 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 ![upload data](image/ConnectAzure_AddCsv.png)
 
-さあ、アプリケーションを再度実行してみましょう。Azure のデータが取得できているはずです！
+一度アプリケーションを削除して、再度実行してみましょう(アプリ内に前回までの table データが残っており、最初に PUSH するロジックのため二重に table データが登録されるのを防ぐため)。Azure のデータが取得できているはずです！
 
 
 ## 宿題
@@ -713,7 +700,7 @@ public class EmotionService
 }
 ```
 
-3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze** と指定する
+3.) 詳細ページにボタンを追加し、 **x:Name="ButtonAnalyze"** と指定する
 
 4.) クリックのハンドラを追加し、`async`キーワードを指定する
 
