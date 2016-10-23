@@ -171,7 +171,7 @@ public bool IsBusy
 インターネットから取得してきた speaker のデータを格納するために `ObservableCollection` を使います。
 なぜ `ObservableCollection` を使うかというと、これは要素(コレクションの中身)を追加とか削除とかすると発火する `CollectionChanged` というイベントを最初から持っているからです。
 
-コンストラクタのすぐ上に、自動プロパティを作ります。
+コンストラクタを用意して、そのすぐ上に、自動プロパティを作ります。
 
 ```csharp
 public ObservableCollection<Speaker> Speakers { get; set; }
