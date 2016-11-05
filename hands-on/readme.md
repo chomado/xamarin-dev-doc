@@ -741,6 +741,17 @@ await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level),
 <Button Text="Save" x:Name="ButtonSave"/>
 ```
 
+#### AzureServiceを更新する
+
+`AzureService`を開き、話し手を更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
+
+```csharp
+ public async Task UpdateSpeaker(Speaker speaker)
+{
+    await table.UpdateAsync(speaker);
+}
+```
+
 #### SpeakersViewModelを更新する
 
 `SpeakersViewModel`を開き、話し手を同期し、リストを更新する`UpdateSpeaker(Speaker speaker)`メソッドを追加します。
@@ -748,8 +759,8 @@ await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level),
 ```csharp
  public async Task UpdateSpeaker(Speaker speaker)
 {
-    await table.UpdateAsync(speaker);
-    await table.Sync();
+    var service = DependencyService.Get<AzureService>();
+    await service.UpdateSpeaker(speaker);
     await GetSpeakers();
 }
 ```
