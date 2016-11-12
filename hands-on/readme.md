@@ -663,6 +663,18 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 <img src="image/ConnectAzure_Dashboard.png" width="500" />
 
+この後の項目を行うために今回用の特別な設定を行います。
+
+まずは先ほど作成したMobile Appを選択します。
+
+アプリケーション設定(Application settings)の中のアプリ設定(App settings)セクションを探します。
+
+**MobileAppsManagement_EXTENSION_VERSION**の**「latest」**を**「1.0.367」**に変更します。
+
+最後に保存(Save)を押してください。 
+
+![upload data](image/save00.png)
+
 **Features** 内の **Easy Tables** を選択します。
 
 作成済みの todoitem が見えるはずですが、ここでは新しいテーブルを作成し、デフォルトのデータセットを **Add from CSV** からアップロードすることで作成します。
