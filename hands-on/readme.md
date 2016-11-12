@@ -602,7 +602,7 @@ Azure バックエンドを私たちのモバイルアプリに追加するた�
 
 **Service/AzureService.cs** を開き、必要な編集していきましょう。
 
-**Initialize()** メソッド内の appUrl の **OUR-APP-NAME-HERE** を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば "https://xxxxspeakers..azurewebsites.net" になるはずです。
+**Initialize()** メソッド内の appUrl の **OUR-APP-NAME-HERE** を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば "https://xxxxspeakers.azurewebsites.net" になるはずです。
 
 次に **GetSpeakers()** メソッドを table を初期化して同期し、Nameを基準に昇順で並び替える以下の行で置き換えましょう:
 
