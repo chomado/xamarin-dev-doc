@@ -64,7 +64,7 @@ Windows でも Mac でも良いです。
 
 スピーカーの情報を取ってこれるようにするため、 Speaker モデルを作りましょう。
 
-1. `DevDaysSpeakers (Portable)` プロジェクトの中の `DevDaysSpeakers/Model/Speaker.cs` ファイルを開きます。
+1. `DevDaysSpeakers (共通部分)` プロジェクトの中の `DevDaysSpeakers/Model/Speaker.cs` ファイルを開きます。
 1. 【コピペ】 Speaker クラスの中に、以下のプロパティを追加してください。
 
 ```csharp
