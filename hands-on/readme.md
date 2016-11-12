@@ -851,10 +851,10 @@ SpeakersViewModelを受け取るようにDetailsPageのコンストラクタを�
 変更前:
 ```csharp
 Speaker speaker;
-public DetailsPage(Speaker item)
+public DetailsPage(Speaker speaker)
 {
     InitializeComponent();
-    this.speaker = item;
+    this.speaker = speaker;
     ...
 }
 ```
