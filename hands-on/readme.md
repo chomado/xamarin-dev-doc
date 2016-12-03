@@ -844,6 +844,11 @@ http://microsoft.com/cognitive からアカウントとAPIキーを取得し、�
 
 ![Cognitive Serivce Emotion API](image/Cognitive_Emotion01.png)
 
+
+(もしうまく行かなかったらの時の話)
+![Cognitive Serivce Emotion API](image/GotErrorWhenRegisteringEmotionAPI.png)
+
+
 画面が遷移します。**Emotion - Preview** にチェックが入っていることを確認し、画面下の Term、Privacy Policy のチェックをオンにして、**Subscribe** をクリックします。(Contact me with promotional offers and updates about Microsoft Cognitive Services. はチェックしなくても構いません)
 
 ![Cognitive Serivce Emotion API](image/Cognitive_Emotion02.png)
