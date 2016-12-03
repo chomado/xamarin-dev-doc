@@ -166,6 +166,35 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
+現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
+
+```csharp
+using System.ComponentModel;
+//...(略)
+using System.Runtime.CompilerServices;
+
+namespace DevDaysSpeakers.ViewModel
+{
+	public class SpeakersViewModel : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		void OnPropertyChanged([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+		bool busy;
+		public bool IsBusy
+		{ 
+			get { return busy; }
+			set {
+				busy = value;
+				OnPropertyChanged();
+			}
+		}
+	}
+}
+```
+
 ### Speaker の ObservableCollection
 
 [メモ]    
