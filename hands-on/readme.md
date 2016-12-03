@@ -577,6 +577,8 @@ DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定�
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
+（もしここで`ListViewSpeakers`が無いよ、というエラーが出たら、一度ソリューションを「クリーン」して「リビルド」してみてください。IDEの表示上はエラーになっていてもビルドはちゃんと通って「実行」もできる、という場合があります。）
+
 そして、DetailsPage へナビゲートされるように、ListViewSpeakers_ItemSelected を作成します：
 
 ```csharp
