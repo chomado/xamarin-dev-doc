@@ -484,6 +484,20 @@ namespace DevDaysSpeakers.ViewModel
 ```xml
 <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 ```
+現在、`SpeakersPage.xaml`は、次のようになっているはずです。
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevDaysSpeakers.View.SpeakersPage"
+             Title="Speakers">
+	<StackLayout Spacing="0">
+		<Button Text="Sync Speakers" Command="{Binding GetSpeakersCommand}"/>
+		<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+	</StackLayout>
+</ContentPage>
+```
 
 Speakers コレクションに ListView をバインディングして、全ての要素を表示します。
 また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています：
