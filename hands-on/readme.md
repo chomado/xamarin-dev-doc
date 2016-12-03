@@ -166,7 +166,7 @@ public bool IsBusy
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
 
-現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
+【確認】現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
 
 ```csharp
 using System.ComponentModel;
@@ -376,7 +376,7 @@ set
 }
 ```
 
-現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
+【確認】現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
 
 ```csharp
 using System.ComponentModel;
@@ -484,7 +484,7 @@ namespace DevDaysSpeakers.ViewModel
 ```xml
 <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 ```
-現在、`SpeakersPage.xaml`は、次のようになっているはずです。
+【確認】現在、`SpeakersPage.xaml`は、次のようになっているはずです。
 
 ```xml
 <?xml version="1.0" encoding="utf-8" ?>
@@ -500,7 +500,7 @@ namespace DevDaysSpeakers.ViewModel
 ```
 
 Speakers コレクションに ListView をバインディングして、全ての要素を表示します。
-また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています：
+また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています。先程の ActivityIndicator の下に書きましょう：
 
 ```xml
 <ListView x:Name="ListViewSpeakers"
