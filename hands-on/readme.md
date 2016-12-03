@@ -861,6 +861,9 @@ http://microsoft.com/cognitive からアカウントとAPIキーを取得し、�
 
 1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクト(一番上の共通プロジェクト以外)に追加します。
 
+↓ Visual Studio for Mac での NuGet Package の追加方法
+![Microsoft.ProjectOxford.Emotion](image/AddingNuGetPackage.png)
+
 ![Microsoft.ProjectOxford.Emotion](image/Cognitive01.png)
 
 2.) `EmotionService`クラスを追加します (GetHappinessAsync の中の API キーは直してください)
