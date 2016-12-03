@@ -626,6 +626,29 @@ SpeakersPage と同じように StackLayout を使いますが、ここでは、
 <Button Text="ウェブサイトに移動" x:Name="ButtonWebsite"/>
 ```
 
+【確認】結果的に、`DetailsPage.xaml`は このようになっているはずです。
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevDaysSpeakers.View.DetailsPage"
+             Title="Details">
+	<ScrollView Padding="10">
+		<StackLayout Spacing="10">
+			<!-- 詳細画面のコントロール群をここに書く -->
+			<Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
+
+			<Label Text="{Binding Name}" FontSize="24"/>
+			<Label Text="{Binding Title}" TextColor="Purple"/>
+			<Label Text="{Binding Description}"/>
+
+			<Button Text="読み上げる" x:Name="ButtonSpeak"/>
+			<Button Text="ウェブサイトに移動" x:Name="ButtonWebsite"/>
+		</StackLayout>    
+	</ScrollView>
+</ContentPage>
+```
+
 ### 読み上げる
 
 **DetailsPage.xaml.cs** を開いて、2つのクリック ハンドラを足しますが、ここでは、ButtonSpeak から始めます。
