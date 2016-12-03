@@ -859,7 +859,7 @@ http://microsoft.com/cognitive からアカウントとAPIキーを取得し、�
 
 #### Visual Studio での作業
 
-1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加します。
+1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクト(一番上の共通プロジェクト以外)に追加します。
 
 ![Microsoft.ProjectOxford.Emotion](image/Cognitive01.png)
 
