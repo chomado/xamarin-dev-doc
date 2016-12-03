@@ -468,7 +468,7 @@ namespace DevDaysSpeakers.ViewModel
 ```xml
  <StackLayout Spacing="0">
 
-  </StackLayout>
+ </StackLayout>
 ```
 
 今後、この StackLayout に対して、他のコントロールを追加していきます。
