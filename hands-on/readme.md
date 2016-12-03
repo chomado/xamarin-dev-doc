@@ -536,6 +536,8 @@ App.cs を開いてみると、そこには、App() のコンストラクタが�
 
 ![Startup project](./image/AppRun001.png)
 
+![実行する](./image/jikkou.png)
+
 #### iOS
 PCを使っている場合、アプリの実行・デバッグを行うためには、XamarinがインストールされているmacOSのデバイスに接続する必要があります。
 
