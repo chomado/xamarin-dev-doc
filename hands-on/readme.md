@@ -30,6 +30,8 @@ Windows でも Mac でも良いです。
 まず、アメリカ本家の[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。（この日本語リポジトリではなく、[こっち](https://github.com/xamarin/dev-days-labs)です）          
 [https://github.com/xamarin/dev-days-labs](https://github.com/xamarin/dev-days-labs)
 
+![クローン先](image/clone.png)
+
 ## 手順 1 ：ソリューションファイルを開く
 
 [Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
