@@ -26,7 +26,8 @@ Windows でも Mac でも良いです。
 
 # さぁ手を動かそう！
 
-まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。    
+【重要】
+まず、アメリカ本家の[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。（この日本語リポジトリではなく、[こっち](https://github.com/xamarin/dev-days-labs)です）    
 [https://github.com/xamarin/dev-days-labs](https://github.com/xamarin/dev-days-labs)
 
 ## 手順 1 ：ソリューションファイルを開く
