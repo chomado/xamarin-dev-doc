@@ -841,6 +841,9 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 [Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)を使い、詳細ページに話し手の表情から幸福度を解析するボタンを追加しましょう。
 
+![Microsoft.ProjectOxford.Emotion](image/withEmotion.png)
+
+
 http://microsoft.com/cognitive からアカウントとAPIキーを取得し、以下の手順を踏んでください。
 
 #### Cognitive Serivce Emotion API のアカウント作成
@@ -948,6 +951,10 @@ var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avat
 ```csharp
 await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level), "OK");
 ```
+
+完成！
+![Microsoft.ProjectOxford.Emotion](image/withEmotion.png)
+
 
 ### 宿題2: 話し手の詳細を編集する
 
