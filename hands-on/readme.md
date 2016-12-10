@@ -887,18 +887,20 @@ using System.Threading.Tasks;
 以下のクラスを作成します。
 
 ```csharp
+// MSの エモーションAPIサービスを使い、スピーカーの顔写真の幸せ度(どの程度笑顔か)を判断するクラス
 public class EmotionService
 {
     private static async Task<Emotion[]> GetHappinessAsync(string url)
     {
         var client = new HttpClient();
-        var emotionClient = new EmotionServiceClient("INSERT_EMOTION_SERVICE_KEY_HERE");
+        var emotionClient = new EmotionServiceClient("ここにAPIキー文字列を入れてね");
 
         var emotionResults = await emotionClient.RecognizeAsync(url);
 
         if (emotionResults == null || emotionResults.Count() == 0)
         {
-            throw new Exception("Can't detect face");
+            // 顔写真で人間の顔が認識できなかった場合(猿とか)は例外を吐いて落ちる
+            throw new Exception("顔が認識できないよ");
         }
 
         return emotionResults;
@@ -918,15 +920,16 @@ public class EmotionService
         return score / emotionResults.Count();
     }
 
+    // 幸福度スコア(大きいほど笑顔)を受け取り、その評価文字列を返す
     public static string GetHappinessMessage(float score)
     {
         score = score * 100;
         double result = Math.Round(score, 2);
 
         if (score >= 50)
-            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノ";
+            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノわーい！しあわせ！";
         else
-            return result + "% （；＿；）";
+            return result + "% （；＿；）しあわせじゃない";
     }
 }
 ```
