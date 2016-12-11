@@ -7,6 +7,8 @@ Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手�
 
 ## 今回 何を作るの？
 
+![完成形](./image/end.jpg)
+
 | 項目                       | 値                                                            |
 |----------------------------|---------------------------------------------------------------|---|
 | どんなアプリ？             | Xamarin Dev Days の本社スピーカーと、その人の詳細を表示するアプリ |
@@ -26,12 +28,15 @@ Windows でも Mac でも良いです。
 
 # さぁ手を動かそう！
 
-まず、[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。    
+【重要】      
+まず、アメリカ本家の[ハンズオンのレポジトリ](https://github.com/xamarin/dev-days-labs) をクローンまたはダウンロードしてローカルに保存し、開いておいてください。（この日本語リポジトリではなく、[こっち](https://github.com/xamarin/dev-days-labs)です）          
 [https://github.com/xamarin/dev-days-labs](https://github.com/xamarin/dev-days-labs)
+
+![クローン先](image/clone.png)
 
 ## 手順 1 ：ソリューションファイルを開く
 
-[Start ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。  
+[`dev-days-labs/HandsOnLab/Start/` ディレクトリ](https://github.com/xamarin/dev-days-labs/tree/master/HandsOnLab/Start) の中にある「`DevDaysSpeakers.sln`」を開いてください。   
 （Windows の場合は Visual Studio、Mac OS の場合は Xamarin Studio で開きます。）
 
 ソリューションタブを見ると、4つのプロジェクトで構成されているのが分かります。
@@ -64,7 +69,7 @@ Windows でも Mac でも良いです。
 
 スピーカーの情報を取ってこれるようにするため、 Speaker モデルを作りましょう。
 
-1. `DevDaysSpeakers (Portable)` プロジェクトの中の `DevDaysSpeakers/Model/Speaker.cs` ファイルを開きます。
+1. `DevDaysSpeakers (共通部分)` プロジェクトの中の `DevDaysSpeakers/Model/Speaker.cs` ファイルを開きます。
 1. 【コピペ】 Speaker クラスの中に、以下のプロパティを追加してください。
 
 ```csharp
@@ -165,6 +170,35 @@ public bool IsBusy
 ```
 
 `OnPropertyChanged();` を呼んでいますね。これを呼ぶことによって Xamarin.Forms は、IsBusy の値が set された時に、自動的に知ることができます。
+
+【確認】現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
+
+```csharp
+using System.ComponentModel;
+//...(略)
+using System.Runtime.CompilerServices;
+
+namespace DevDaysSpeakers.ViewModel
+{
+	public class SpeakersViewModel : INotifyPropertyChanged
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		void OnPropertyChanged([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+		bool busy;
+		public bool IsBusy
+		{ 
+			get { return busy; }
+			set {
+				busy = value;
+				OnPropertyChanged();
+			}
+		}
+	}
+}
+```
 
 ### Speaker の ObservableCollection
 
@@ -347,6 +381,88 @@ set
 }
 ```
 
+【確認】現在、`SpeakersViewModel.cs` ファイルは次のようになっているはずです。
+
+```csharp
+using System.ComponentModel;
+//...(略)
+using System.Runtime.CompilerServices;
+
+namespace DevDaysSpeakers.ViewModel
+{
+	public class SpeakersViewModel : INotifyPropertyChanged
+	{
+		public ObservableCollection<Speaker> Speakers { get; set; }
+		public Command GetSpeakersCommand { get; set; }
+
+		public SpeakersViewModel() 
+		{
+			Speakers = new ObservableCollection<Speaker>();
+			GetSpeakersCommand = new Command(
+				async () => await GetSpeakers(),
+				() => !IsBusy);
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		void OnPropertyChanged([CallerMemberName] string name = null) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+		bool busy;
+		public bool IsBusy
+		{ 
+			get { return busy; }
+			set
+			{
+				busy = value;
+				OnPropertyChanged();
+				//Update the can execute
+				GetSpeakersCommand.ChangeCanExecute();
+			}
+		}
+
+		// インターネットから speaker のデータをすべて取ってくる
+		async Task GetSpeakers()
+		{
+			if (IsBusy)
+				return;
+
+			Exception error = null;
+			try
+			{
+				IsBusy = true;
+
+				using (var client = new HttpClient())
+				{
+					//サーバーから json を取得します
+					var json = await client.GetStringAsync("http://demo4404797.mockable.io/speakers");
+
+					//json をデシリアライズします
+					var items = JsonConvert.DeserializeObject<List<Speaker>>(json);
+
+					//リストを Speakers に読み込ませます
+					Speakers.Clear();
+					foreach (var item in items)
+						Speakers.Add(item);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Error: " + ex);
+				error = ex;
+			}
+			finally
+			{
+				IsBusy = false;
+			}
+
+			if (error != null)
+				await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+		}
+	}
+}
+```
+
 ## ユーザーインターフェース!!!
 さて、最初の Xamarin.Forms ユーザーインタフェースとして、**View/SpeakersPage.xaml** を作っていきましょう。
 
@@ -357,7 +473,7 @@ set
 ```xml
  <StackLayout Spacing="0">
 
-  </StackLayout>
+ </StackLayout>
 ```
 
 今後、この StackLayout に対して、他のコントロールを追加していきます。
@@ -373,9 +489,23 @@ set
 ```xml
 <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
 ```
+【確認】現在、`SpeakersPage.xaml`は、次のようになっているはずです。
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevDaysSpeakers.View.SpeakersPage"
+             Title="Speakers">
+	<StackLayout Spacing="0">
+		<Button Text="Sync Speakers" Command="{Binding GetSpeakersCommand}"/>
+		<ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+	</StackLayout>
+</ContentPage>
+```
 
 Speakers コレクションに ListView をバインディングして、全ての要素を表示します。
-また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています：
+また、*x:Name=""* という特別なプロパティを使って、コントロールに名前を付けることができます。ここでは、ListView に ListViewSpeakers という名前を付けています。先程の ActivityIndicator の下に書きましょう：
 
 ```xml
 <ListView x:Name="ListViewSpeakers"
@@ -410,6 +540,8 @@ App.cs を開いてみると、そこには、App() のコンストラクタが�
 遂に、iOS、Android、あるいは、UWP (Windows/VS2015 のみ) をスタートアップ プロジェクトとして設定し、デバッグを開始することができるようになりました！
 
 ![Startup project](./image/AppRun001.png)
+
+![実行する](./image/jikkou.png)
 
 #### iOS
 PCを使っている場合、アプリの実行・デバッグを行うためには、XamarinがインストールされているmacOSのデバイスに接続する必要があります。
@@ -449,6 +581,8 @@ DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定�
 ```csharp
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
+
+（もしここで`ListViewSpeakers`が無いよ、というエラーが出たら、一度ソリューションを「クリーン」して「リビルド」してみてください。IDEの表示上はエラーになっていてもビルドはちゃんと通って「実行」もできる、という場合があります。）
 
 そして、DetailsPage へナビゲートされるように、ListViewSpeakers_ItemSelected を作成します：
 
@@ -495,6 +629,29 @@ SpeakersPage と同じように StackLayout を使いますが、ここでは、
 ```xml
 <Button Text="読み上げる" x:Name="ButtonSpeak"/>
 <Button Text="ウェブサイトに移動" x:Name="ButtonWebsite"/>
+```
+
+【確認】結果的に、`DetailsPage.xaml`は このようになっているはずです。
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DevDaysSpeakers.View.DetailsPage"
+             Title="Details">
+	<ScrollView Padding="10">
+		<StackLayout Spacing="10">
+			<!-- 詳細画面のコントロール群をここに書く -->
+			<Image Source="{Binding Avatar}" HeightRequest="200" WidthRequest="200"/>
+
+			<Label Text="{Binding Name}" FontSize="24"/>
+			<Label Text="{Binding Title}" TextColor="Purple"/>
+			<Label Text="{Binding Description}"/>
+
+			<Button Text="読み上げる" x:Name="ButtonSpeak"/>
+			<Button Text="ウェブサイトに移動" x:Name="ButtonWebsite"/>
+		</StackLayout>    
+	</ScrollView>
+</ContentPage>
 ```
 
 ### 読み上げる
@@ -602,7 +759,7 @@ Azure バックエンドを私たちのモバイルアプリに追加するた�
 
 **Service/AzureService.cs** を開き、必要な編集していきましょう。
 
-**Initialize()** メソッド内の appUrl の **OUR-APP-NAME-HERE** を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば "https://xxxxspeakers..azurewebsites.net" になるはずです。
+**Initialize()** メソッド内の appUrl の **OUR-APP-NAME-HERE** を作成した Azure Mobile Apps の名前で書き換えます。手順の通りにやっていれば "https://xxxxspeakers.azurewebsites.net" になるはずです。
 
 次に **GetSpeakers()** メソッドを table を初期化して同期し、Nameを基準に昇順で並び替える以下の行で置き換えましょう:
 
@@ -684,6 +841,9 @@ Quickstart が終了したら、以下の画面が見えるはずです。また
 
 [Cognitive Serivce Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)を使い、詳細ページに話し手の表情から幸福度を解析するボタンを追加しましょう。
 
+![Microsoft.ProjectOxford.Emotion](image/withEmotion.png)
+
+
 http://microsoft.com/cognitive からアカウントとAPIキーを取得し、以下の手順を踏んでください。
 
 #### Cognitive Serivce Emotion API のアカウント作成
@@ -691,6 +851,11 @@ http://microsoft.com/cognitive からアカウントとAPIキーを取得し、�
 上記リンクから Web にアクセスします。Microsoft アカウントでログインし、**Get started for free** をクリックします。
 
 ![Cognitive Serivce Emotion API](image/Cognitive_Emotion01.png)
+
+
+(もしうまく行かなかったらの時の話)
+![Cognitive Serivce Emotion API](image/GotErrorWhenRegisteringEmotionAPI.png)
+
 
 画面が遷移します。**Emotion - Preview** にチェックが入っていることを確認し、画面下の Term、Privacy Policy のチェックをオンにして、**Subscribe** をクリックします。(Contact me with promotional offers and updates about Microsoft Cognitive Services. はチェックしなくても構いません)
 
@@ -702,7 +867,10 @@ http://microsoft.com/cognitive からアカウントとAPIキーを取得し、�
 
 #### Visual Studio での作業
 
-1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクトに追加します。
+1.) **Microsoft.ProjectOxford.Emotion** を全プロジェクト(一番上の共通プロジェクト以外)に追加します。
+
+↓ Visual Studio for Mac での NuGet Package の追加方法
+![Microsoft.ProjectOxford.Emotion](image/AddingNuGetPackage.png)
 
 ![Microsoft.ProjectOxford.Emotion](image/Cognitive01.png)
 
@@ -722,17 +890,19 @@ using System.Threading.Tasks;
 以下のクラスを作成します。
 
 ```csharp
+// MSの エモーションAPIサービスを使い、スピーカーの顔写真の幸せ度(どの程度笑顔か)を判断するクラス
 public class EmotionService
 {
     private static async Task<Emotion[]> GetHappinessAsync(string url)
     {
-        var emotionClient = new EmotionServiceClient("INSERT_EMOTION_SERVICE_KEY_HERE");
+        var emotionClient = new EmotionServiceClient("ここにAPIキー文字列を入れてね");
 
         var emotionResults = await emotionClient.RecognizeAsync(url);
 
         if (emotionResults == null || emotionResults.Count() == 0)
         {
-            throw new Exception("Can't detect face");
+            // 顔写真で人間の顔が認識できなかった場合(猿とか)は例外を吐いて落ちる
+            throw new Exception("顔が認識できないよ");
         }
 
         return emotionResults;
@@ -752,15 +922,16 @@ public class EmotionService
         return score / emotionResults.Count();
     }
 
+    // 幸福度スコア(大きいほど笑顔)を受け取り、その評価文字列を返す
     public static string GetHappinessMessage(float score)
     {
         score = score * 100;
         double result = Math.Round(score, 2);
 
         if (score >= 50)
-            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノ";
+            return result + " % ヽ（ヽ *ﾟ▽ﾟ*）ノわーい！しあわせ！";
         else
-            return result + "% （；＿；）";
+            return result + "% （；＿；）しあわせじゃない";
     }
 }
 ```
@@ -779,6 +950,10 @@ var level = await EmotionService.GetAverageHappinessScoreAsync(this.speaker.Avat
 ```csharp
 await DisplayAlert("Happiness Level", EmotionService.GetHappinessMessage(level), "OK");
 ```
+
+完成！
+![Microsoft.ProjectOxford.Emotion](image/withEmotion.png)
+
 
 ### 宿題2: 話し手の詳細を編集する
 
@@ -838,10 +1013,10 @@ SpeakersViewModelを受け取るようにDetailsPageのコンストラクタを�
 変更前:
 ```csharp
 Speaker speaker;
-public DetailsPage(Speaker item)
+public DetailsPage(Speaker speaker)
 {
     InitializeComponent();
-    this.speaker = item;
+    this.speaker = speaker;
     ...
 }
 ```
