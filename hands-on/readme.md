@@ -91,7 +91,7 @@ public string Avatar { get; set; }
 ## 手順 4 : View Model を いじる
 
 Xamarin.Forms の view で、どのようにデータを表示するかのすべての機能を、`SpeakersViewModel.cs` が提供します。    
-`SpeakersViewModel` は、 Speaker の List と、サーバからスピーカーのデータを取ってくるために呼ばれるメソッド、から構成されています。また、バックグラウンドタスクとしてデータを取って来ようとしていることを示す boolean フラグも持っています。   
+`SpeakersViewModel` は、 Speaker の List と、サーバからスピーカーのデータを取ってくるために呼ばれるメソッドから構成されています。また、バックグラウンドタスクとしてデータを取って来ようとしていることを示す boolean フラグも持っています。   
 
 ### INotifyPropertyChanged をインプリメントしよう
 
@@ -165,7 +165,7 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 bool busy;
 ```
 
-そして、自動プロパティを作ります。
+そして、プロパティを作ります。
 
 ```csharp
 public bool IsBusy
@@ -377,7 +377,8 @@ ObservableCollection<Speaker> Speakers {get;set;} を作成した場所で、**G
 public Command GetSpeakersCommand { get; set; }
 ```
 
-**SpeakersViewModel()** のコンストラクターの中で GetSpeakersCommand を作成し、使用するメソッドを割り当てます。更に IsBusy プロパティに影響を与える enabled フラグも渡します:
+**SpeakersViewModel()** のコンストラクターの中で2つのメソッドを渡して GetSpeakersCommand を作成します。1つ目はコマンドが実行された時に呼び出されるメソッド、2つ目はコマンドが実行可能かどうかを定めるメソッドです。
+どちらのメソッドも下記のようにラムダ式を使って記述することもできます。
 
 ```csharp
 GetSpeakersCommand = new Command(
@@ -385,14 +386,14 @@ GetSpeakersCommand = new Command(
                 () => !IsBusy);
 ```
 
-この後修正するのは、私たちが作成した enabled 関数を再評価する IsBusy プロパティをいつセットするか？です。**IsBusy** の **set** でシンプルに **ChangeCanExecute** メソッドを次のように実行します:
+続いて、IsBusy プロパティが変化した際、実行可能かどうかを定める関数( `() => !IsBusy` )を再評価したいので、IsBusy プロパティをセットする箇所を修正します。**IsBusy** の **set** でシンプルに **ChangeCanExecute** メソッドを次のように実行します:
 
 ```csharp
 set
 {
     busy = value;
     OnPropertyChanged();
-    //Update the can execute
+    // コマンドが実行可能かどうかを再評価する
     GetSpeakersCommand.ChangeCanExecute();
 }
 ```
