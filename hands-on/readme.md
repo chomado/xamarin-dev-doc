@@ -23,9 +23,6 @@ Windows でも Mac でも良いです。
 |Windows|Windows 10|Visual Studio 2015 Update 3|
 |Mac OS X|10.11 ("El Capitan") 以降 |Xamarin Studio, 最新の Xcode |
 
-ことわり：    
-この手順書はスクリーンショット盛り盛りでお送りしますが、Visual Studio でのスクリーンショットのみとさせていただきます。 Xamarin Studio でもだいたい似た感じなので大丈夫です。
-
 # さぁ手を動かそう！
 
 【重要】      
@@ -64,6 +61,9 @@ Windows でも Mac でも良いです。
 
 ![Restore NuGet packages](./image/Solution002.png)    
 (↑ Windows版の Visual Studio でのスクショ)    
+
+![](./image/restore_on_mac.png)
+(↑ Mac版の Visual Studio でのスクショ)    
 
 ということで、アプリを「実行」してみましょう！    
 IDEの「▶」(再生ボタンみたいな)を押して実行です
