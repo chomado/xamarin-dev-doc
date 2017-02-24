@@ -62,7 +62,7 @@ Windows でも Mac でも良いです。
 ![Restore NuGet packages](./image/Solution002.png)    
 (↑ Windows版の Visual Studio でのスクショ)    
 
-![](./image/restore_on_mac.png)
+![](./image/restore_on_mac.png)        
 (↑ Mac版の Visual Studio でのスクショ)    
 
 ということで、アプリを「実行」してみましょう！    
@@ -95,7 +95,7 @@ Xamarin.Forms の view で、どのようにデータを表示するかのすべ
 
 ### INotifyPropertyChanged をインプリメントしよう
 
-`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェース) は、 MVVM フレームワークにおいて、重要なデータバインディングです。 それ（INotifyPropertyChanged）は、オブジェクトの状態に変更があった場合に、ユーザーインターフェースが通知を受け取ることができる仕組みを提供します。
+`INotifyPropertyChanged` (= プロパティ値が変更されたことをクライアントに通知するインターフェース) は、 MVVM フレームワークにおいて、重要なデータバインディングで使用されます。 それ（INotifyPropertyChanged）は、オブジェクトの状態に変更があった場合に、ユーザーインターフェースが通知を受け取ることができる仕組みを提供します。
 
 今こうなっています：
 
@@ -121,6 +121,8 @@ public class SpeakersViewModel : INotifyPropertyChanged
 `INotifyPropertyChanged` にオンマウスして Ctrl＋. (コントロールキーを押しながらピリオドキーを押す) → ［インターフェイスを実装します］を選択するか、`INotifyPropertyChanged` を右クリックすると表示される［クイックアクションとリファクタリング］をクリックし、［インターフェイスを実装します］をクリックします。
 
 > OS X の場合は、オンマウスして Option + Enter →［インターフェイスを実装します］を選択するか、右クリックすると表示される［クイック修正］をクリックし、［インターフェイスを実装します］をクリックします。
+
+![完成形](./image/quick_fix.png)
 
 これで以下のコードが自動生成されます。
 
