@@ -65,6 +65,12 @@ Windows でも Mac でも良いです。
 ![Restore NuGet packages](./image/Solution002.png)
 
 
+ということで、アプリを「実行」してみましょう！    
+IDEの「▶」(再生ボタンみたいな)を押して実行です
+
+![完成形](./image/start_app.png)
+
+
 ## 手順 3 : Model を いじる
 
 スピーカーの情報を取ってこれるようにするため、 Speaker モデルを作りましょう。
