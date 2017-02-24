@@ -129,8 +129,8 @@ public class SpeakersViewModel : INotifyPropertyChanged
 ```csharp
 public event PropertyChangedEventHandler PropertyChanged;
 ```
-
-これは、プロパティが変更された時いつでも呼ばれるメソッドです。ということで `OnPropertyChanged` というヘルパーメソッド(helper method)を作る必要が出てきます。
+ `OnPropertyChanged` というヘルパーメソッド(helper method)を (`SpeakersViewModel` クラスの中に) 作りましょう。    
+これは、プロパティが変更されるたびに呼ばれるメソッドです。
 
 【コピペ】 C# 6
 ```csharp
@@ -151,8 +151,9 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 }
 ```
 
-というわけで、我々は、プロパティが更新され時はいつでも `OnPropertyChanged()` を呼ぶことができるようになりました。    
-さぁ、我々の最初の、バインディングできるプロパティ (our first bindable property) を作ってみましょう！
+というわけで、
+プロパティが更新されるたびに `OnPropertyChanged()` を呼ぶことができるようになりました。    
+さぁ、我々の最初の、バインディング可能なプロパティ (our first bindable property) を作ってみましょう！
 
 ### IsBusy プロパティ
 
@@ -200,7 +201,8 @@ namespace DevDaysSpeakers.ViewModel
 		public bool IsBusy
 		{ 
 			get { return busy; }
-			set {
+			set 
+			{
 				busy = value;
 				OnPropertyChanged();
 			}
@@ -225,6 +227,8 @@ public ObservableCollection<Speaker> Speakers { get; set; }
 
 コンストラクタの中で、`ObservableCollection` の新しいインスタンスを作ります。
 なので、SpeakersViewModelクラスのコンストラクタはこのようになります：
+
+(【スニペット】ちなみに「ctor」と打って tab + tab すると、コンストラクタを自動で生成してくれます)
 
 ```csharp
 public SpeakersViewModel()
@@ -309,7 +313,7 @@ Speakers.Clear();
 foreach (var item in items)
     Speakers.Add(item);
 ```
-何か問題があれば **catch** 句で例外を保存し、最後の finally 句でポップアップアラートを表示します:
+何か問題があれば **catch** 句で例外を保存し、最後の finally 句**の後**でポップアップアラートを表示します:
 
 ```csharp
 if (error != null)
