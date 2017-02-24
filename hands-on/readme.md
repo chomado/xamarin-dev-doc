@@ -54,7 +54,7 @@ Windows でも Mac でも良いです。
 
 すべてのプロジェクトにおいて、必要な NuGet パッケージはすべてインストール済みとなっています。なので、このハンズオンでは、新たにパッケージを追加でインストールする必要はありません。
 
-まず最初に我々がしなければならないことは、インターネットから、すべての NuGet パッケージをリストアすることです。
+まず最初に私たちがしなければならないことは、インターネットから、すべての NuGet パッケージをリストアすることです。
 
 どうやるかというと、ソリューションタブの中の『ソリューション』を
 右クリックして、『`Restore NuGet packages`』をクリックします。
@@ -153,7 +153,7 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 
 というわけで、
 プロパティが更新されるたびに `OnPropertyChanged()` を呼ぶことができるようになりました。    
-さぁ、我々の最初の、バインディング可能なプロパティ (our first bindable property) を作ってみましょう！
+さぁ、私たちの最初の、バインディング可能なプロパティ (our first bindable property) を作ってみましょう！
 
 ### IsBusy プロパティ
 
@@ -240,7 +240,7 @@ public SpeakersViewModel()
 
 ### GetSpeakers メソッド
 
-我々は今から `GetSpeakers` という名前のメソッドを作ろうとしていますが、これは、インターネットから speaker のデータをすべて取ってくるときに呼ぶメソッドです。    
+私たちは今から `GetSpeakers` という名前のメソッドを作ろうとしていますが、これは、インターネットから speaker のデータをすべて取ってくるときに呼ぶメソッドです。    
 まずは単純な HTTP リクエストから実装します。でもあとから Azure からデータを取ってきたりこちら(クライアント)から変更して sync できるようにアップデートします！
 
 まず、`GetSpeakers`という名前のメソッドを作ります。型は `async Task` です。
@@ -358,7 +358,10 @@ async Task GetSpeakers()
     }
 
     if (error != null)
+    {
+        // ポップアップアラートを表示
         await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+    }
 }
 ```
 
