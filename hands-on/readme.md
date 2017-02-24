@@ -369,9 +369,9 @@ async Task GetSpeakers()
 
 #### GetSpeakers Command
 
-このメソッドを直接実行する代わりに、私たちは **Command** を公開します。Command は実行されるメソッドを知り、任意の Command が実行可能かを説明するインターフェイスを持っています。
+このメソッドを直接実行する代わりに、私たちは **Command** を公開します。Command は実行されるメソッドを知り、さらに、任意の Command が実行可能かどうかの分かるインターフェイスを持っています。
 
-ObservableCollection<Speaker> Speakers {get;set;} を作成した場所で、**GetSpeakersCommand** Command を作成しましょう:
+`ObservableCollection<Speaker> Speakers {get;set;}` を作成した場所で、**GetSpeakersCommand** Command を作成しましょう:
 
 ```csharp
 public Command GetSpeakersCommand { get; set; }
@@ -381,18 +381,18 @@ public Command GetSpeakersCommand { get; set; }
 
 ```csharp
 GetSpeakersCommand = new Command(
-                async () => await GetSpeakers(),
-                () => !IsBusy);
+                async () => await GetSpeakers(), // 実行する処理
+                () => !IsBusy); // このコマンドが実行可能の時にtrueを返す
 ```
 
-この後修正するのは、私たちが作成した enabled 関数を再評価する IsBusy プロパティをいつセットするか？です。**IsBusy** の **set** でシンプルに **ChangeCanExecute** メソッドを次のように実行します:
+この後修正するのは、私たちが作成した enabled 関数 (= Commandの第二引数) を再評価する IsBusy プロパティをいつセットするか？です。**IsBusy** の **set** でシンプルに **ChangeCanExecute** メソッドを次のように実行します:
 
 ```csharp
 set
 {
     busy = value;
     OnPropertyChanged();
-    //Update the can execute
+    // CanExecute （このコマンドが実行可能かどうか）を更新
     GetSpeakersCommand.ChangeCanExecute();
 }
 ```
@@ -432,7 +432,7 @@ namespace DevDaysSpeakers.ViewModel
 			{
 				busy = value;
 				OnPropertyChanged();
-				//Update the can execute
+				// CanExecute （このコマンドが実行可能かどうか）を更新
 				GetSpeakersCommand.ChangeCanExecute();
 			}
 		}
@@ -473,7 +473,10 @@ namespace DevDaysSpeakers.ViewModel
 			}
 
 			if (error != null)
+			{
+				// ポップアップアラートを表示
 				await Application.Current.MainPage.DisplayAlert("Error!", error.Message, "OK");
+			}
 		}
 	}
 }
@@ -482,9 +485,11 @@ namespace DevDaysSpeakers.ViewModel
 ## ユーザーインターフェース!!!
 さて、最初の Xamarin.Forms ユーザーインタフェースとして、**View/SpeakersPage.xaml** を作っていきましょう。
 
+今までは C# で書いてきましたが、ここから(ユーザインタフェース)は**XAML**(ざむる)という、マークアップ言語で書いていきます。(Extensible Application Markup Language)
+
 ### SpeakersPage.xaml
 
-アプリの最初のページとして、縦にスタックされる(縦に連なって表示される)コントロール群を追加します。初めに、ContentPage の中に、次のように StackLayout を追加します：
+アプリの最初のページとして、縦にスタックされる(縦に連なって表示される)コントロール群を追加します。はじめに、ContentPage の中に、次のように StackLayout を追加します：
 
 ```xml
  <StackLayout Spacing="0">
@@ -545,11 +550,11 @@ Xamarin.Forms には、いくつかの既定の Cell が定義されています
 </ListView.ItemTemplate>
 ```
 
-Xamarin.Forms は、サーバー上の画像を自動的にダウンロード、キャッシュした後、表示します。
+Xamarin.Forms の ImageCell は、サーバー上の画像を自動的にダウンロードして、キャッシュした後に、表示します。
 
 ### App.cs を確認する
 
-App.cs を開いてみると、そこには、App() のコンストラクタがあり、そこがアプリケーションのエントリ ポイントになっています。この中では、新しい SpeackersPage を作成し、それをナビゲーション ページでラップすることで、タイトル バーを作っています。
+App.cs を開いてみると、そこには、App() のコンストラクタがあり、そこがアプリケーションのエントリーポイントになっています。この中では、新しい SpeackersPage を作成し、それをナビゲーション ページでラップすることで、タイトルバーを作っています。
 
 ### アプリを実行する!
 
@@ -584,6 +589,8 @@ DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定�
 **ツール->拡張機能と更新プログラム** に移動します。    
 オンラインの検索で、*SQLite* を検索し、SQlite for Univeral Windows Platform がインストールされていることを確認します。(執筆時のバージョンは、 3.13.0)    
 ![Sqlite](http://content.screencast.com/users/JamesMontemagno/folders/Jing/media/ace42b1e-edd8-4e65-92e7-f638b83ad533/2016-07-11_1605.png)
+
+/* ハンズオン運営メモ：ここで休憩 and 必要なら講師交代 */
 
 ## Details (詳細画面)
 
