@@ -62,12 +62,13 @@ Windows でも Mac でも良いです。
 どうやるかというと、ソリューションタブの中の『ソリューション』を
 右クリックして、『`Restore NuGet packages`』をクリックします。
 
-![Restore NuGet packages](./image/Solution002.png)
-
+![Restore NuGet packages](./image/Solution002.png)    
+(↑ Windows版の Visual Studio でのスクショ)    
 
 ということで、アプリを「実行」してみましょう！    
 IDEの「▶」(再生ボタンみたいな)を押して実行です
 
+(↓ Mac版の Visual Studio でのスクショ)    
 ![完成形](./image/start_app.png)
 
 
