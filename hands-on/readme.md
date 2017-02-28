@@ -20,8 +20,8 @@ Windows でも Mac でも良いです。
 
 |OS|OS のバージョン|要インストール済|
 |----|----|----|
-|Windows|Windows 10|Visual Studio 2015 Update 3|
-|Mac OS X|10.11 ("El Capitan") 以降 |Xamarin Studio, 最新の Xcode |
+|Windows|Windows 10|Xamarin インストール済みの Visual Studio (2015 Update 3｜2017 RC)|
+|Mac OS X|10.11 ("El Capitan") 以降 |(Xamarin Studio もしくは VS for Mac) と 最新の Xcode |
 
 # さぁ手を動かそう！
 
