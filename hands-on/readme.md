@@ -14,6 +14,9 @@ Microsoft 本社の Xamarin チームが作った、詳細なハンズオン手�
 | どんなアプリ？             | Xamarin Dev Days の本社スピーカーと、その人の詳細を表示するアプリ |
 | どんなアプリ？(技術的視点) | Microsoft Azure に接続された Xamarin.Forms で作るアプリ       |
 
+![](https://github.com/chomado/Xamalist/blob/master/doc_image/architecture.jpg?raw=true)
+
+
 ## 開発環境
 
 Windows でも Mac でも良いです。
@@ -49,6 +52,8 @@ Windows でも Mac でも良いです。
 
 共通部分である `DevDaysSpeakers` プロジェクトの中に、空白の XAMLページ ([View/DetailsPage.xaml](https://github.com/xamarin/dev-days-labs/blob/master/HandsOnLab/Start/DevDaysSpeakers/DevDaysSpeakers/View/DetailsPage.xaml)など) がありますが、    
 これはこのハンズオンの中で使うことになるものです。
+
+![](https://camo.githubusercontent.com/4c30ee2264e05b54aae37cf029bcc56fd62e05f9/68747470733a2f2f626c6f672e78616d6172696e2e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031342f30362f58616d6172696e466f726d73312e706e67)
 
 ## 手順 2 : NuGet Restore
 
