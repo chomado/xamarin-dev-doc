@@ -167,7 +167,7 @@ void OnPropertyChanged([CallerMemberName] string name = null)
 まず、バッキングフィールドを作ります。
 
 ```csharp
-bool busy;
+bool isBusy;
 ```
 
 そして、自動プロパティを作ります。
@@ -175,10 +175,10 @@ bool busy;
 ```csharp
 public bool IsBusy
 {
-    get { return busy; }
+    get { return isBusy; }
     set
     {
-        busy = value;
+        isBusy = value;
         OnPropertyChanged();
     }
 }
