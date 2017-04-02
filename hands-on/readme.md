@@ -557,6 +557,23 @@ Xamarin.Forms には、いくつかの既定の Cell が定義されています
 
 Xamarin.Forms の ImageCell は、サーバー上の画像を自動的にダウンロードして、キャッシュした後に、表示します。
 
+### View に ViewModel を接続する
+
+View の要素に ViewModel の プロパティをバインディングしてきましたが、この View にどの ViewModel をバインディングするのか教える必要があります。つまり、 `SpeakersViewModel` を作成して `BindingContext` に設定します。 `SpeakersPage.xaml.cs` を開いてみてください。必要なコードは書いておきました。
+
+```csharp
+SpeakersViewModel vm;
+
+public SpeakersPage()
+{
+    InitializeComponent();
+
+    // Create the view model and set as binding context
+    vm = new SpeakersViewModel();
+    BindingContext = vm;
+}
+```
+
 ### App.cs を確認する
 
 App.cs を開いてみると、そこには、App() のコンストラクタがあり、そこがアプリケーションのエントリーポイントになっています。この中では、新しい SpeackersPage を作成し、それをナビゲーション ページでラップすることで、タイトルバーを作っています。
