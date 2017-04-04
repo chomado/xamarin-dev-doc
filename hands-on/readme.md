@@ -610,7 +610,6 @@ DevDaysSpeakers.UWP をスタートアップ プロジェクトとして設定�
 ListViewSpeakers.ItemSelected += ListViewSpeakers_ItemSelected;
 ```
 
-（もしここで`ListViewSpeakers`が無いよ、というエラーが出たら、一度ソリューションを「クリーン」して「リビルド」してみてください。IDEの表示上はエラーになっていてもビルドはちゃんと通って「実行」もできる、という場合があります。）
 
 そして、DetailsPage へナビゲートされるように、ListViewSpeakers_ItemSelected を作成します：
 
@@ -626,6 +625,8 @@ private async void ListViewSpeakers_ItemSelected(object sender, SelectedItemChan
     ListViewSpeakers.SelectedItem = null;
 }
 ```
+
+（もしここで`ListViewSpeakers`が無いよ、というエラーが出たら、一度ソリューションを「クリーン」して「リビルド」してみてください。IDEの表示上はエラーになっていてもビルドはちゃんと通って「実行」もできる、という場合があります。）
 
 上のコードでは、最初に選択されている項目が null でないことを確認してから、**Navigation** API を使って、新しく作ったページをプッシュし、最後に、項目の選択を解除します。
 
