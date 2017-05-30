@@ -2,7 +2,7 @@
 
 # Xamarin Dev Days Japan ドキュメント
 
-2016/11/12 に開催される [Xamarin Dev Days Japan](https://ti.to/xamarin/dev-days-tokyo/ja) で使うドキュメントを置いていきます。　　    
+2016/11/12 に開催された [Xamarin Dev Days Japan](https://ti.to/xamarin/dev-days-tokyo/ja) でのドキュメントを置いていきます。　　    
 もっとここをこう書いたほうが良いなどありましたらバシバシプルリクください。
 
 翻訳に参加していただける方は **[コントリビューション ガイドライン](CONTRIBUTING.md)** に従って、作業をお願いします。
