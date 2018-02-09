@@ -924,7 +924,6 @@ public class EmotionService
 {
     private static async Task<Emotion[]> GetHappinessAsync(string url)
     {
-        var client = new HttpClient();
         var emotionClient = new EmotionServiceClient("ここにAPIキー文字列を入れてね");
 
         var emotionResults = await emotionClient.RecognizeAsync(url);
